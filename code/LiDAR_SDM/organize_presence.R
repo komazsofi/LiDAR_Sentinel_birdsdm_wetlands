@@ -40,9 +40,7 @@ proj4string(formask)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763
 
 # where not to place absences
 
-forpresmask <- setValues(raster(landcover_crop), 0)
-proj4string(forpresmask)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
-presmask <- rasterize(bird_ahn3ac_filt, forpresmask,"number",fun='count')
+presrast <- vect2rast(bird_ahn3ac_filt, fname = "number",cell.size=500,file.name="pres_rast500m.tif")
 
 # Export
 raster::shapefile(bird_ahn3ac_filt,"bird_ahn3ac_filt2016",overwrite=TRUE)
