@@ -1,18 +1,21 @@
 library(rgdal)
 library(raster)
-library(plotKML)
+library(sp)
+library(rgeos)
 
-workingdirectory="D:/Sync/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/presence/"
+workingdirectory="D:/Sync/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/"
 setwd(workingdirectory)
 
 birdsfile="Reedland_bird_observations.shp"
 ahn3_acqfile="ahn3_measuretime.shp"
 landcoverfile="LGN7.tif"
+surveyfile="BMPplots_12530.shp"
 
 # Import
 birds_sp = readOGR(dsn=birdsfile)
 ahn3_acq_sp = readOGR(dsn=ahn3_acqfile)
 landcover=raster(landcoverfile)
+surveyplot = readOGR(dsn=surveyfile)
 
 # Filter presence according to the needs
 
@@ -23,6 +26,8 @@ bird_ahn3ac=raster::intersect(birdsel_sp,ahn3_acq_sp)
 bird_ahn3ac_filt=bird_ahn3ac[(bird_ahn3ac@data$OBJECTID==5),]
 
 ahn3_acq_sp_filt=ahn3_acq_sp[(ahn3_acq_sp@data$OBJECTID==5),]
+
+surveyplot_filt=raster::intersect(surveyplot,ahn3_acq_sp_filt)
 
 # Cut landcover map for area of interest
 
@@ -39,12 +44,38 @@ formask[landcover_crop==16 |landcover_crop==30 | landcover_crop==41 | landcover_
 proj4string(formask)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
 
 # where not to place absences
+bird_ahn3ac_filt_buff <- gBuffer(bird_ahn3ac_filt, width = 200)
+proj4string(bird_ahn3ac_filt_buff)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
 
-presrast <- vect2rast(bird_ahn3ac_filt, fname = "number",cell.size=500,file.name="pres_rast500m.tif")
+
+# generate absences
+absence_cand=spsample(surveyplot_filt,n=1000,"random")
+absence_cand.df=as.data.frame(absence_cand)
+absence_cand.df$occurrence <- 0
+
+absence_cand.df$X_obs=absence_cand.df$x
+absence_cand.df$Y_obs=absence_cand.df$y
+coordinates(absence_cand.df)=~X_obs+Y_obs
+proj4string(absence_cand.df)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
+
+absence_cand_add1=raster::extract(formask,absence_cand.df)
+absence_cand.df@data$wetland_mask <- absence_cand_add1
+
+absence_cand.df_int <- gIntersects(absence_cand.df,bird_ahn3ac_filt_buff, byid=TRUE)
+absence_cand.df@data$presence <- absence_cand.df_int[,1]
+
+absence=absence_cand.df@data[absence_cand.df@data$wetland_mask==1 & absence_cand.df@data$presence==FALSE,]
+absence=absence[complete.cases(absence), ]
+
+absence$X_obs=absence$x
+absence$Y_obs=absence$y
+coordinates(absence)=~X_obs+Y_obs
+proj4string(absence)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
 
 # Export
 raster::shapefile(bird_ahn3ac_filt,"bird_ahn3ac_filt2016",overwrite=TRUE)
 raster::shapefile(ahn3_acq_sp_filt,"studyarea",overwrite=TRUE)
+raster::shapefile(absence,"absence",overwrite=TRUE)
 
 writeRaster(landcover_crop,'landcover_crop.tif',overwrite=TRUE)
 writeRaster(formask,"wetland_mask.tif",overwrite=TRUE)
