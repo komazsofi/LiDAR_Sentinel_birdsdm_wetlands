@@ -3,6 +3,9 @@ library(raster)
 library(sp)
 library(rgeos)
 
+library(dplyr)
+library(stringr)
+
 workingdirectory="D:/Sync/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/"
 setwd(workingdirectory)
 
@@ -72,10 +75,27 @@ absence$Y_obs=absence$y
 coordinates(absence)=~X_obs+Y_obs
 proj4string(absence)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
 
+# create pres-abs file for SDM
+
+absence.df=as.data.frame(absence)
+presence.df=as.data.frame(bird_ahn3ac_filt)
+
+absence.dfsel=subset(absence.df,select=c(1,2,3))
+presence.dfsel=subset(presence.df,select=c(6,7,10))
+names(presence.dfsel)<- names(absence.dfsel)
+
+presabs=rbind(absence.dfsel,presence.dfsel)
+
+presabs$X_obs=presabs$x
+presabs$Y_obs=presabs$y
+coordinates(presabs)=~X_obs+Y_obs
+proj4string(presabs)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
+
 # Export
 raster::shapefile(bird_ahn3ac_filt,"bird_ahn3ac_filt2016",overwrite=TRUE)
 raster::shapefile(ahn3_acq_sp_filt,"studyarea",overwrite=TRUE)
 raster::shapefile(absence,"absence",overwrite=TRUE)
+raster::shapefile(presabs,"presabs",overwrite=TRUE)
 
 writeRaster(landcover_crop,'landcover_crop.tif',overwrite=TRUE)
 writeRaster(formask,"wetland_mask.tif",overwrite=TRUE)
