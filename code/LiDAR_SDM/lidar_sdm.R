@@ -3,11 +3,11 @@ library(rgdal)
 library(raster)
 library(usdm)
 
-workingdirectory="D:/Sync/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/lidar/masked2/"
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/lidar/masked2/"
 setwd(workingdirectory)
 
-birdsfile="D:/Sync/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/presabs.shp"
-studyareafile="D:/Sync/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/studyarea.shp"
+birdsfile="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/presabs.shp"
+studyareafile="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/studyarea.shp"
 
 # Import
 birds = readOGR(dsn=birdsfile)
@@ -23,4 +23,15 @@ lidar2 <- crop(lidar, extent(studyarea))
 
 # check collinearity
 
-vifcor(lidar2,th=0.7,method='spearman')
+vifstep(lidar2,th=5)
+
+# sdm
+
+data_forsdm <- sdmData(formula=occurrence~reed_prop+ppr+density1_2+density2_3+density0_1+fhd+kurto+perc_25+height+vv_std, train=birds, predictors=lidar2)
+data_forsdm
+
+model <- sdm(occurrence~.,data=data_forsdm,methods=c('brt','rf'),replication=c('boot'),n=50)
+
+rcurve(model,id=50:100)
+vi <- getVarImp(model,method="brt")
+plot(vi)
