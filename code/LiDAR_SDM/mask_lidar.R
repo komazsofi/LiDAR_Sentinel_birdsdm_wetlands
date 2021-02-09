@@ -38,7 +38,6 @@ humanobj_sel=crop(humanobject,extent(lidar))
 humanobj_rast <- rasterize(humanobj_sel, lidar,field="hoogtenive")
 humanobj_rast_resampled=resample(humanobj_rast,lidar)
 writeRaster(humanobj_rast_resampled,"humanobj_mask.tif",overwrite=TRUE)
-#lidar_masked_2 <- mask(lidar_masked, humanobj_rast_resampled,maskvalue=0)
   
 # apply
 
@@ -49,10 +48,12 @@ for (i in filelist) {
   proj4string(lidar) <- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
   
   lidar_masked <- mask(lidar, lgn7_mask_resampled)
+  lidar_masked_2 <- mask(lidar_masked, humanobj_rast_resampled,maskvalue=0)
   
   getfilename=str_sub(i,1,-5)
   
-  writeRaster(lidar_masked,paste(workingdirectory,"/masked/",getfilename,"_masked.tif",sep=""),overwrite=TRUE)
+  #writeRaster(lidar_masked,paste(workingdirectory,"/masked/",getfilename,"_masked.tif",sep=""),overwrite=TRUE)
+  writeRaster(lidar_masked,paste(workingdirectory,"/masked2/",getfilename,"_masked_humanobj.tif",sep=""),overwrite=TRUE)
 }
   
 
