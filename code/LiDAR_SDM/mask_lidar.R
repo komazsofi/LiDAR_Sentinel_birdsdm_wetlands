@@ -34,10 +34,10 @@ writeRaster(lgn7_mask_resampled,"lgn7_mask.tif",overwrite=TRUE)
 
 # powerline filter
 
-#humanobj_sel=crop(humanobject,extent(lidar))
-#humanobj_rast <- rasterize(humanobj_sel, lidar,field="hoogtenive")
-#humanobj_rast_resampled=resample(humanobj_rast,lidar)
-#writeRaster(humanobj_rast_resampled,"humanobj_mask.tif",overwrite=TRUE)
+humanobj_sel=crop(humanobject,extent(lidar))
+humanobj_rast <- rasterize(humanobj_sel, lidar,field="hoogtenive")
+humanobj_rast_resampled=resample(humanobj_rast,lidar)
+writeRaster(humanobj_rast_resampled,"humanobj_mask.tif",overwrite=TRUE)
 #lidar_masked_2 <- mask(lidar_masked, humanobj_rast_resampled,maskvalue=0)
   
 # apply
