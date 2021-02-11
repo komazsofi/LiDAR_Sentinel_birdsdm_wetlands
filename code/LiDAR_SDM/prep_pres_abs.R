@@ -6,7 +6,7 @@ library(rgeos)
 library(dplyr)
 library(stringr)
 
-workingdirectory="D:/Sync/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/"
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/"
 setwd(workingdirectory)
 
 birdsfile="Reedland_bird_observations.shp"
@@ -22,28 +22,22 @@ surveyplot = readOGR(dsn=surveyfile)
 
 # Filter presence according to the needs
 
-birdsel_sp=birds_sp[(birds_sp@data$species=="Grote Karekiet" & birds_sp@data$year==2016),]
+birdsel_sp=birds_sp[(birds_sp@data$species=="Grote Karekiet"),]
 bird_ahn3ac=raster::intersect(birdsel_sp,ahn3_acq_sp)
 
-#bird_ahn3ac_filt=bird_ahn3ac[(bird_ahn3ac@data$year==bird_ahn3ac@data$Jaar),]
-bird_ahn3ac_filt=bird_ahn3ac[(bird_ahn3ac@data$OBJECTID==5),]
-
+bird_ahn3ac_filt=bird_ahn3ac[(bird_ahn3ac@data$year==bird_ahn3ac@data$Jaar),]
+#bird_ahn3ac_filt=bird_ahn3ac[(bird_ahn3ac@data$OBJECTID==5),]
 ahn3_acq_sp_filt=ahn3_acq_sp[(ahn3_acq_sp@data$OBJECTID==5),]
 
-surveyplot_filt=raster::intersect(surveyplot,ahn3_acq_sp_filt)
-
-# Cut landcover map for area of interest
-
-landcover2 <- crop(landcover, extent(ahn3_acq_sp_filt))
-landcover_crop <- mask(landcover2, ahn3_acq_sp_filt)
+#surveyplot_filt=raster::intersect(surveyplot,ahn3_acq_sp_filt)
 
 # select required landcover classes and create the mask
 
-bird_ahn3ac_filt_wlc=raster::extract(landcover_crop,bird_ahn3ac_filt)
+bird_ahn3ac_filt_wlc=raster::extract(landcover,bird_ahn3ac_filt)
 bird_ahn3ac_filt@data$landcover <- bird_ahn3ac_filt_wlc
 
-formask <- setValues(raster(landcover_crop), NA)
-formask[landcover_crop==16 |landcover_crop==30 | landcover_crop==41 | landcover_crop==42 | landcover_crop==43 | landcover_crop==45] <- 1
+formask <- setValues(raster(landcover), NA)
+formask[landcover==16 |landcover==30 | landcover==41 | landcover==42 | landcover==43 | landcover==45] <- 1
 proj4string(formask)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
 
 # where not to place absences
@@ -52,7 +46,7 @@ proj4string(bird_ahn3ac_filt_buff)<- CRS("+proj=sterea +lat_0=52.15616055555555 
 
 
 # generate absences
-absence_cand=spsample(surveyplot_filt,n=1000,"random")
+absence_cand=spsample(surveyplot,n=1000,"random")
 absence_cand.df=as.data.frame(absence_cand)
 absence_cand.df$occurrence <- 0
 
