@@ -31,6 +31,7 @@ proj4string(formask)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763
   
 lgn7_mask_resampled=resample(formask,lidar)
 writeRaster(lgn7_mask_resampled,"lgn7_mask.tif",overwrite=TRUE)
+lgn7_mask_resampled=raster("lgn7_mask.tif")
 
 # powerline filter
 
@@ -38,6 +39,7 @@ humanobj_sel=crop(humanobject,extent(lidar))
 humanobj_rast <- rasterize(humanobj_sel, lidar,field="hoogtenive")
 humanobj_rast_resampled=resample(humanobj_rast,lidar)
 writeRaster(humanobj_rast_resampled,"humanobj_mask.tif",overwrite=TRUE)
+humanobj_rast_resampled=raster("humanobj_mask.tif")
   
 # apply
 
@@ -52,8 +54,8 @@ for (i in filelist) {
   
   getfilename=str_sub(i,1,-5)
   
-  #writeRaster(lidar_masked,paste(workingdirectory,"/masked/",getfilename,"_masked.tif",sep=""),overwrite=TRUE)
-  writeRaster(lidar_masked,paste(workingdirectory,"/masked2/",getfilename,"_masked_humanobj.tif",sep=""),overwrite=TRUE)
+  writeRaster(lidar_masked,paste(workingdirectory,"/masked/",getfilename,"_masked.tif",sep=""),overwrite=TRUE)
+  writeRaster(lidar_masked_2,paste(workingdirectory,"/masked2/",getfilename,"_masked_humanobj.tif",sep=""),overwrite=TRUE)
 }
   
 
