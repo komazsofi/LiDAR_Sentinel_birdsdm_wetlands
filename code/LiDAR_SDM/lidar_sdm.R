@@ -21,7 +21,7 @@ names(lidar) <- c("HH_reedveg_prop","C_ppr","HH_sd_low","HH_sd","VD_1_2","VD_2_3
 
 lidar2 <- crop(lidar, extent(studyarea))
 lidar_crop <- mask(lidar2,studyarea)
-writeRaster(lidar_crop,'lidar_crop.tif',overwrite=TRUE)
+#writeRaster(lidar_crop,'lidar_crop.tif',overwrite=TRUE)
 
 # check for collinearity
 
@@ -32,10 +32,16 @@ vifstep(lidar2,th=5)
 data_forsdm <- sdmData(formula=occurrence~., train=birds[,-c(1,2)], predictors=lidar_crop)
 data_forsdm
 
-model <- sdm(occurrence~.,data=data_forsdm,methods=c('brt','rf','maxent'),replication=c('cv','boot'),cv.folds=5,n=10)
-#write.sdm(model,'ensemble_GRW_LiDAR_NL_cv10_boot_n50') 
+model <- sdm(occurrence~.,data=data_forsdm,methods=c('brt','rf','maxent'),replication=c('cv','boot'),cv.folds=5,n=5)
+model
+write.sdm(model,'ensemble_GRW_LiDAR_NL_cv5_boot_n5') 
 
-p1 <- ensemble(model, newdata=lidar_crop, filename='',setting=list(method='weighted',stat='AUC'))
+#lidar_crop_df=as.data.frame(lidar_crop)
+
+lidar_crop_m=rasterToPoints(lidar_crop)
+lidar_crop_df=as.data.frame(lidar_crop_m)
+
+p1 <- ensemble(model, newdata=lidar_crop_df[,-c(1,2)], filename='',setting=list(method='weighted',stat='AUC'))
 p2 <- predict(model, newdata=lidar_crop, filename='',mean=T)
 
 # interpretations
