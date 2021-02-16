@@ -3,10 +3,10 @@ library(rgdal)
 library(raster)
 library(usdm)
 
-workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar/merged/masked/"
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar/merged/masked"
 setwd(workingdirectory)
 
-birdsfile="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/presabs.shp"
+birdsfile="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/presabs_800rand_studyarea.shp"
 
 # Import
 birds = readOGR(dsn=birdsfile)
@@ -26,7 +26,7 @@ radar_selected=exclude(radar,vif)
 data_forsdm <- sdmData(formula=occurrence~., train=birds[,-c(1,2)], predictors=radar_selected)
 data_forsdm
 
-model <- sdm(occurrence~.,data=data_forsdm,methods=c('rf'),replication=c('cv','boot'),cv.folds=5,n=5)
+model <- sdm(occurrence~.,data=data_forsdm,methods=c('rf'),replication=c('boot'),n=10)
 model
 #write.sdm(model,'ensemble_GRW_LiDAR_NL_cv5_boot_n5') 
 
