@@ -28,7 +28,7 @@ formask[landcover_crop==16 |landcover_crop==30 | landcover_crop==41 | landcover_
 proj4string(formask)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
 
 lgn7_mask_resampled=resample(formask,lidar)
-writeRaster(lgn7_mask_resampled,"lgn7_mask.tif",overwrite=TRUE)
+#writeRaster(lgn7_mask_resampled,"lgn7_mask.tif",overwrite=TRUE)
 lgn7_mask_resampled=raster("lgn7_mask.tif")
 
 # apply

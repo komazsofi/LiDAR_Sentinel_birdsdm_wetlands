@@ -3,7 +3,7 @@ library(rgdal)
 library(raster)
 library(usdm)
 
-workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar/merged/masked"
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar/merged/masked/"
 setwd(workingdirectory)
 
 birdsfile="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/presabs_800rand_studyarea.shp"
@@ -20,6 +20,7 @@ radar=stack(filelist)
 vif=vifstep(radar,th=5)
 
 radar_selected=exclude(radar,vif)
+radar_selected=radar
 
 # sdm modelling study area
 
