@@ -2,6 +2,7 @@ library(sdm)
 library(rgdal)
 library(raster)
 library(usdm)
+library(ggcorrplot)
 
 workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/both/"
 setwd(workingdirectory)
@@ -48,3 +49,17 @@ p2 <- predict(model, newdata=radar_crop, filename='',mean=T)
 rcurve(model)
 vi <- getVarImp(model,method=c('rf'))
 plot(vi)
+
+# analyze
+
+data=data_forsdm@features
+data$occ <- 0
+data$occ[189:263]<-1
+
+data2=data[data$occ==1,]
+
+r <- cor(data2[2:13])
+
+ggcorrplot(r,
+           type = "lower",
+           lab = TRUE)
