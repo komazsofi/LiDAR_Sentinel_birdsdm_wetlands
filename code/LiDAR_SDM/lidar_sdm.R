@@ -26,6 +26,7 @@ lidar_crop <- mask(lidar2,studyarea)
 
 vif=vifstep(lidar_crop,th=5)
 lidar_selected=exclude(lidar_crop,vif)
+writeRaster(lidar_selected,"D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/both/lidar.grd",overwrite=TRUE)
 
 # sdm modelling study area
 
