@@ -3,6 +3,7 @@ library(raster)
 library(sdm)
 library(ggplot2)
 library(snow)
+library(gridExtra)
 
 workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar/merged/"
 setwd(workingdirectory)
@@ -21,7 +22,7 @@ data_forsdm <- sdmData(formula=occurrence~., train=birds[,-c(1,2)], predictors=r
 
 data=data_forsdm@features
 data$occ <- 0
-data$occ[355:433]<-1
+data$occ[354:428]<-1
 
 data$diffVVQ2Q4=data$radar_metricVV_2-data$radar_metricVV_4
 data$diffVVQ2VV=data$radar_metricVV_2-data$radar_metricVV
@@ -32,20 +33,20 @@ data$ratVVVH=data$radar_metricVV/data$radar_metricVH
 data$diffVVVHQ2=data$radar_metricVV_2-data$radar_metricVH_2
 data$diffVVVH=data$radar_metricVV-data$radar_metricVH
 
-ggplot(data, aes(x=occ, y=radar_metricVV_max,group=occ,fill=as.factor(occ)))+geom_boxplot()
-ggplot(data, aes(x=occ, y=radar_metricVH_max,group=occ,fill=as.factor(occ)))+geom_boxplot()
-ggplot(data, aes(x=occ, y=radar_metricVV_stdDev,group=occ,fill=as.factor(occ)))+geom_boxplot()
-ggplot(data, aes(x=occ, y=radar_metricVH_stdDev,group=occ,fill=as.factor(occ)))+geom_boxplot()
+p1=ggplot(data, aes(x=occ, y=radar_metricVV_max,group=occ,fill=as.factor(occ)))+geom_boxplot()
+p2=ggplot(data, aes(x=occ, y=radar_metricVH_max,group=occ,fill=as.factor(occ)))+geom_boxplot()
+p3=ggplot(data, aes(x=occ, y=radar_metricVV_stdDev,group=occ,fill=as.factor(occ)))+geom_boxplot()
+p4=ggplot(data, aes(x=occ, y=radar_metricVH_stdDev,group=occ,fill=as.factor(occ)))+geom_boxplot()
 
-ggplot(data, aes(x=occ, y=radar_metricVV_1,group=occ,fill=as.factor(occ)))+geom_boxplot()
-ggplot(data, aes(x=occ, y=radar_metricVV_2,group=occ,fill=as.factor(occ)))+geom_boxplot()
-ggplot(data, aes(x=occ, y=radar_metricVV_3,group=occ,fill=as.factor(occ)))+geom_boxplot()
-ggplot(data, aes(x=occ, y=radar_metricVV_4,group=occ,fill=as.factor(occ)))+geom_boxplot()
+p5=ggplot(data, aes(x=occ, y=radar_metricVV_1,group=occ,fill=as.factor(occ)))+geom_boxplot()
+p6=ggplot(data, aes(x=occ, y=radar_metricVV_2,group=occ,fill=as.factor(occ)))+geom_boxplot()
+p7=ggplot(data, aes(x=occ, y=radar_metricVV_3,group=occ,fill=as.factor(occ)))+geom_boxplot()
+p8=ggplot(data, aes(x=occ, y=radar_metricVV_4,group=occ,fill=as.factor(occ)))+geom_boxplot()
 
-ggplot(data, aes(x=occ, y=radar_metricVH_1,group=occ,fill=as.factor(occ)))+geom_boxplot()
-ggplot(data, aes(x=occ, y=radar_metricVH_2,group=occ,fill=as.factor(occ)))+geom_boxplot()
-ggplot(data, aes(x=occ, y=radar_metricVH_3,group=occ,fill=as.factor(occ)))+geom_boxplot()
-ggplot(data, aes(x=occ, y=radar_metricVH_4,group=occ,fill=as.factor(occ)))+geom_boxplot()
+p9=ggplot(data, aes(x=occ, y=radar_metricVH_1,group=occ,fill=as.factor(occ)))+geom_boxplot()
+p10=ggplot(data, aes(x=occ, y=radar_metricVH_2,group=occ,fill=as.factor(occ)))+geom_boxplot()
+p11=ggplot(data, aes(x=occ, y=radar_metricVH_3,group=occ,fill=as.factor(occ)))+geom_boxplot()
+p12=ggplot(data, aes(x=occ, y=radar_metricVH_4,group=occ,fill=as.factor(occ)))+geom_boxplot()
 
 ggplot(data, aes(x=occ, y=diffVVQ2Q4,group=occ,fill=as.factor(occ)))+geom_boxplot()
 ggplot(data, aes(x=occ, y=diffVVQ2VV,group=occ,fill=as.factor(occ)))+geom_boxplot()
@@ -55,6 +56,10 @@ ggplot(data, aes(x=occ, y=ratVVVH,group=occ,fill=as.factor(occ)))+geom_boxplot()
 
 ggplot(data, aes(x=occ, y=diffVVVHQ2,group=occ,fill=as.factor(occ)))+geom_boxplot()
 ggplot(data, aes(x=occ, y=diffVVVH,group=occ,fill=as.factor(occ)))+geom_boxplot()
+
+fig=grid.arrange(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,
+                 ncol=4,
+                 nrow=3)
 
 # calc VV/VH
 
