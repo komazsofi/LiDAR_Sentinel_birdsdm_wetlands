@@ -58,7 +58,7 @@ data$occ[189:263]<-1
 
 data2=data[data$occ==1,]
 
-r <- cor(data2[2:13])
+r <- cor(data[2:13])
 
 ggcorrplot(r,
            type = "lower",
