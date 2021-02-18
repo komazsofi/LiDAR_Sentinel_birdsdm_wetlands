@@ -21,6 +21,7 @@ lidar=stack("lidar.grd")
 radar2=resample(lidar,radar)
 
 rasters=stack(radar2,radar)
+writeRaster(rasters,"lidar_sentinel.grd",overwrite=TRUE)
 
 # check for collinearity
 
@@ -34,8 +35,11 @@ radar_selected=rasters
 data_forsdm <- sdmData(formula=occurrence~., train=birds[,-c(1,2)], predictors=radar_selected)
 data_forsdm
 
-model <- sdm(occurrence~.,data=data_forsdm,methods=c('rf'),replication=c('boot'),n=10)
+model <- sdm(occurrence~.,data=data_forsdm,methods=c('rf'),replication=c('boot'),n=25)
 model
+
+model2 <- sdm(occurrence~.,data=data_forsdm,methods=c('maxent'),replication=c('boot'),n=25)
+model2
 #write.sdm(model,'ensemble_GRW_LiDAR_NL_cv5_boot_n5') 
 
 # extract area of interest
@@ -54,11 +58,11 @@ plot(vi)
 
 data=data_forsdm@features
 data$occ <- 0
-data$occ[189:263]<-1
+data$occ[164:237]<-1
 
 data2=data[data$occ==1,]
 
-r <- cor(data[2:13])
+r <- cor(data2[2:17])
 
 ggcorrplot(r,
            type = "lower",

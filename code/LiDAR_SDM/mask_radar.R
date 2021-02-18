@@ -4,7 +4,7 @@ library(raster)
 library(dplyr)
 library(stringr)
 
-workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar/merged/"
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar2/merged/"
 setwd(workingdirectory)
 
 landcoverfile="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/LGN7.tif"
@@ -29,7 +29,7 @@ proj4string(formask)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763
 
 lgn7_mask_resampled=resample(formask,lidar)
 #writeRaster(lgn7_mask_resampled,"lgn7_mask.tif",overwrite=TRUE)
-lgn7_mask_resampled=raster("lgn7_mask.tif")
+#lgn7_mask_resampled=raster("lgn7_mask.tif")
 
 # apply
 

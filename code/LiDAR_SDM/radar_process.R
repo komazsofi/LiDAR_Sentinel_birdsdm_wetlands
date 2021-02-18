@@ -46,23 +46,23 @@ for (i in filelist) {
 print(i)
   
 radarraster=stack(i)
-writeRaster(radarraster, filename=paste("D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar/",str_remove(i, ".tif"),"_",names(radarraster),sep=""), bylayer=TRUE,format="GTiff")
+writeRaster(radarraster, filename=paste("D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar2/",str_remove(i, ".tif"),"_",names(radarraster),sep=""), bylayer=TRUE,format="GTiff")
 
 }
 
 feanames=stack(filelist[1])
 feanames=names(feanames)
 
-workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar/"
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar2/"
 setwd(workingdirectory)
 
-for (j in feanames[9:16]) {
+for (j in feanames) {
   print(j)
   
   files_permetric=list.files(pattern = paste("*",j,".tif",sep=""))
   metric=mosaicList(files_permetric)
   
-  writeRaster(metric,paste("D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar/merged/radar_metric",j,".tif",sep=""),overwrite=TRUE)
+  writeRaster(metric,paste("D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar2/merged/radar_metric",j,".tif",sep=""),overwrite=TRUE)
   
 }
 
