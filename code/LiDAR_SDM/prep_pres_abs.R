@@ -12,7 +12,8 @@ setwd(workingdirectory)
 birdsfile="Reedland_bird_observations.shp"
 ahn3_acqfile="ahn3_measuretime.shp"
 landcoverfile="LGN7.tif"
-surveyfile="BMPplots_12530.shp"
+#surveyfile="BMPplots_12530.shp"
+surveyfile="BMPplots_12380.shp"
 
 # Import
 birds_sp = readOGR(dsn=birdsfile)
@@ -22,7 +23,8 @@ surveyplot = readOGR(dsn=surveyfile)
 
 # Filter presence according to the needs
 
-birdsel_sp=birds_sp[(birds_sp@data$species=="Grote Karekiet" & birds_sp@data$year==2016),]
+#birdsel_sp=birds_sp[(birds_sp@data$species=="Grote Karekiet" & birds_sp@data$year==2016),]
+birdsel_sp=birds_sp[(birds_sp@data$species=="Snor" & birds_sp@data$year==2016),]
 bird_ahn3ac=raster::intersect(birdsel_sp,ahn3_acq_sp)
 
 #bird_ahn3ac_filt=bird_ahn3ac[(bird_ahn3ac@data$year==bird_ahn3ac@data$Jaar),]
@@ -51,7 +53,7 @@ proj4string(bird_ahn3ac_filt_buff)<- CRS("+proj=sterea +lat_0=52.15616055555555 
 
 
 # generate absences
-absence_cand=spsample(surveyplot_filt,n=800,"random")
+absence_cand=spsample(surveyplot_filt,n=2500,"random")
 absence_cand.df=as.data.frame(absence_cand)
 absence_cand.df$occurrence <- 0
 
@@ -91,7 +93,7 @@ coordinates(presabs)=~X_obs+Y_obs
 proj4string(presabs)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
 
 # Export
-raster::shapefile(presabs,"presabs_800rand_studyarea",overwrite=TRUE)
+raster::shapefile(presabs,"presabs_Sn_rand_studyarea",overwrite=TRUE)
 
-writeRaster(landcover_crop,'landcover_crop.tif',overwrite=TRUE)
-writeRaster(formask,"wetland_mask.tif",overwrite=TRUE)
+#writeRaster(landcover_crop,'landcover_crop.tif',overwrite=TRUE)
+#writeRaster(formask,"wetland_mask.tif",overwrite=TRUE)
