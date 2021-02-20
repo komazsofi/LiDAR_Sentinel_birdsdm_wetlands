@@ -69,6 +69,11 @@ rcurve(model)
 vi <- getVarImp(model,method=c('rf'))
 plot(vi)
 
+# export models
+
+write.sdm(model_lidar,'RFmean_Sn_LiDAR_small_boot_n5')
+write.sdm(model_sentinel,'RFmean_Sn_Sentinel_small_boot_n5')
+write.sdm(model,'RFmean_Sn_Both_small_boot_n5')
 
 # predict for area of interests
 
