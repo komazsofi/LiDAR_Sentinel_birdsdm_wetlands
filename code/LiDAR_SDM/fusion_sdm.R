@@ -35,7 +35,7 @@ rasters=exclude(rasters,vif)
 data_forsdm_lidar <- sdmData(formula=occurrence~., train=birds[,-c(1,2)], predictors=lidar)
 data_forsdm_lidar
 
-model_lidar <- sdm(occurrence~.,data=data_forsdm_lidar,methods=c('rf'),replication=c('boot'),n=25)
+model_lidar <- sdm(occurrence~.,data=data_forsdm_lidar,methods=c('rf'),replication=c('boot'),n=25,test.percent=40)
 model_lidar
 
 # interpretations
@@ -48,7 +48,7 @@ plot(vi_lidar)
 data_forsdm_sentinel <- sdmData(formula=occurrence~., train=birds[,-c(1,2)], predictors=radar)
 data_forsdm_sentinel
 
-model_sentinel <- sdm(occurrence~.,data=data_forsdm_sentinel,methods=c('rf'),replication=c('boot'),n=25)
+model_sentinel <- sdm(occurrence~.,data=data_forsdm_sentinel,methods=c('rf'),replication=c('boot'),n=25,test.percent=40)
 model_sentinel
 
 # interpretations
@@ -61,7 +61,7 @@ plot(vi_sentinel)
 data_forsdm <- sdmData(formula=occurrence~., train=birds[,-c(1,2)], predictors=rasters)
 data_forsdm
 
-model <- sdm(occurrence~.,data=data_forsdm,methods=c('rf'),replication=c('boot'),n=25)
+model <- sdm(occurrence~.,data=data_forsdm,methods=c('rf'),replication=c('boot'),n=25,test.percent=40)
 model
 
 # interpretations
