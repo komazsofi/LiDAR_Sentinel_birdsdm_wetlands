@@ -1,6 +1,8 @@
 library(sdm)
 library(ggplot2)
 library(ggcorrplot)
+library(gridExtra)
+library(ggpubr)
 
 workingdir="D:/Sync/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/both/"
 setwd(workingdir)
@@ -77,8 +79,24 @@ ggplot(feaimp3, aes(x=variables, y=corTest, fill=species)) + geom_bar(stat="iden
 data_GrW=RFmean_GrW@data@features
 names(data_GrW)<-c("rID","L_HH_reedveg_prop","L_C_ppr","L_HH_sd_low","L_HH_sd","L_VD_1_2","L_VD_2_3","L_VV_p25","L_VV_std","S_Prop_water","S_NDVI_sd_hor","S_VH_sd_hor","S_VH_sd_time","S_VV_max_time","S_VV_sd_time","S_NDVI_med_time","S_NDVI_sd_time")
 
-r_grw <- cor(data_GrW[2:17])
+data_GrW$occ <- 0
+data_GrW$occ[164:237]<-1
+
+r_grw <- cor(data_GrW[2:17],method = "spearman")
 
 ggcorrplot(r_grw,
            type = "lower",
            lab = TRUE)
+
+p1=ggplot(data=data_GrW, aes(x=L_HH_reedveg_prop , y=S_NDVI_sd_time),show.legend = FALSE) +  
+  geom_point(aes(color=as.factor(occ)),size=5,show.legend = TRUE) +
+  theme_bw(base_size = 20)+
+  stat_cor(method = "spearman", label.x.npc = "left", label.y.npc = "top",size=10,p.accuracy = 0.001,cor.coef.name="r")
+
+p2=ggplot(data=data_GrW, aes(x=L_VD_2_3 , y=S_VV_max_time),show.legend = FALSE) +  
+  geom_point(aes(color=as.factor(occ)),size=5,show.legend = TRUE) +
+  theme_bw(base_size = 20)+
+  stat_cor(method = "spearman", label.x.npc = "left", label.y.npc = "top",size=10,p.accuracy = 0.001,cor.coef.name="r")
+
+
+
