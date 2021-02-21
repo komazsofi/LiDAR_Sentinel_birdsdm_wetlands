@@ -76,7 +76,7 @@ ggplot(feaimp3, aes(x=variables, y=corTest, fill=species)) + geom_bar(stat="iden
 
 ########## Correlation among metrics
 
-data_GrW=RFmean_GrW@data@features
+data_GrW=RFmean_Sn@data@features
 names(data_GrW)<-c("rID","L_HH_reedveg_prop","L_C_ppr","L_HH_sd_low","L_HH_sd","L_VD_1_2","L_VD_2_3","L_VV_p25","L_VV_std","S_Prop_water","S_NDVI_sd_hor","S_VH_sd_hor","S_VH_sd_time","S_VV_max_time","S_VV_sd_time","S_NDVI_med_time","S_NDVI_sd_time")
 
 data_GrW$occ <- 0
@@ -88,15 +88,12 @@ ggcorrplot(r_grw,
            type = "lower",
            lab = TRUE)
 
-p1=ggplot(data=data_GrW, aes(x=L_HH_reedveg_prop , y=S_NDVI_sd_time),show.legend = FALSE) +  
-  geom_point(aes(color=as.factor(occ)),size=5,show.legend = TRUE) +
-  theme_bw(base_size = 20)+
-  stat_cor(method = "spearman", label.x.npc = "left", label.y.npc = "top",size=10,p.accuracy = 0.001,cor.coef.name="r")
+ggscatter(data_GrW, x = "L_HH_reedveg_prop", y = "S_NDVI_sd_time", add = "reg.line",
+          add.params = list(color = "blue", fill = "lightgray",size=3),conf.int = TRUE) +
+  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),label.x = 3,label.y = 0.29,size=10) +
+  geom_point(color="deeppink",size=2,show.legend = TRUE) + theme_bw(base_size = 20)
 
-p2=ggplot(data=data_GrW, aes(x=L_VD_2_3 , y=S_VV_max_time),show.legend = FALSE) +  
-  geom_point(aes(color=as.factor(occ)),size=5,show.legend = TRUE) +
-  theme_bw(base_size = 20)+
-  stat_cor(method = "spearman", label.x.npc = "left", label.y.npc = "top",size=10,p.accuracy = 0.001,cor.coef.name="r")
-
-
-
+ggscatter(data_GrW, x = "L_VD_2_3", y = "S_NDVI_sd_time", add = "reg.line",
+          add.params = list(color = "blue", fill = "lightgray",size=3),conf.int = TRUE) +
+  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),label.x = 0,label.y = 0,size=10) +
+  geom_point(color="deeppink",size=2,show.legend = TRUE) + theme_bw(base_size = 20)
