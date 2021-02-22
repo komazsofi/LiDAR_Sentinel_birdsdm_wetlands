@@ -32,7 +32,7 @@ feaimp=rbind(GrW_feaimp,Sn_feaimp)
 
 ggplot(feaimp, aes(x=variables, y=corTest, fill=species)) + geom_bar(stat="identity", color="black", position=position_dodge())+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+coord_flip()+scale_fill_manual(values = c("goldenrod4", "deeppink"))+
-  theme_bw(base_size = 20)+xlab("Feature Importance")+ylab("Metrics")
+  theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")
 
 # Combined Feature Importance Sentinel
 
@@ -52,7 +52,7 @@ feaimp2=rbind(GrW_feaimp2,Sn_feaimp2)
 
 ggplot(feaimp2, aes(x=variables, y=corTest, fill=species)) + geom_bar(stat="identity", color="black", position=position_dodge())+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+coord_flip()+scale_fill_manual(values = c("goldenrod4", "deeppink"))+
-  theme_bw(base_size = 20)+xlab("Feature Importance")+ylab("Metrics")
+  theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")
 
 # Combined Feature Importance LiDAR
 
@@ -72,7 +72,7 @@ feaimp3=rbind(GrW_feaimp3,Sn_feaimp3)
 
 ggplot(feaimp3, aes(x=variables, y=corTest, fill=species)) + geom_bar(stat="identity", color="black", position=position_dodge())+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+coord_flip()+scale_fill_manual(values = c("goldenrod4", "deeppink"))+
-  theme_bw(base_size = 20)+xlab("Feature Importance")+ylab("Metrics")
+  theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")
 
 ########## Correlation among metrics
 
