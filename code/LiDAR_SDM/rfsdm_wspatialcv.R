@@ -7,7 +7,6 @@ library(randomForest)
 library(precrec)
 
 library(ggplot2)
-library(biomod2)
 
 library(sdm)
 
@@ -119,44 +118,3 @@ for(k in seq_len(length(folds))){
   print(model_lidar)
   
 }
-#BIOMOD2
-
-myRespName <- "occurrence"
-myResp <- as.numeric(mydata_clean3[,myRespName])
-myRespXY <- mydata_clean3[,c("x","y")]
-
-
-myBiomodData <- BIOMOD_FormatingData(resp.var = myResp,
-                                     expl.var = rasters, # explanatory raster data
-                                     resp.xy = myRespXY,
-                                     resp.name = myRespName,
-                                     na.rm = TRUE)
-
-DataSplitTable <- sb$biomodTable
-myBiomodOption <- BIOMOD_ModelingOptions()
-
-myBiomodModelOut <- BIOMOD_Modeling( myBiomodData,
-                                     models = c('RF'),
-                                     models.options = myBiomodOption,
-                                     DataSplitTable = DataSplitTable, # blocking folds
-                                     VarImport = 0,
-                                     models.eval.meth = c('ROC'),
-                                     do.full.models=FALSE,
-                                     modeling.id="test")
-
-myBiomodModelEval <- get_evaluations(myBiomodModelOut)
-myBiomodModelEval["ROC","Testing.data",,,]
-
-myRF <- BIOMOD_LoadModels(myBiomodModelOut, models = 'RF')
-
-myRespPlot2D <- 
-  response.plot2(
-    models = myRF,
-    Data = get_formal_data(myBiomodModelOut, 'expl.var'),
-    show.variables = get_formal_data(myBiomodModelOut,'expl.var.names'),
-    do.bivariate = FALSE,
-    fixed.var.metric = 'median',
-    col = c("blue", "red"),
-    legend = TRUE,
-    data_species = get_formal_data(myBiomodModelOut, 'resp.var')
-  )
