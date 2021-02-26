@@ -32,11 +32,10 @@ mosaicList <- function(rasList){
   return(mos)
 }
 
-workingdirectory="D:/Koma/Sync_PhD/GEE/"
+workingdirectory="D:/Koma/Sync_PhD/GEE/Sentinel_process_febr/"
 setwd(workingdirectory)
 
 filelist=list.files(pattern = "*.tif")
-studyarea=readOGR(dsn="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/studyarea.shp")
 
 # Import
 
@@ -46,14 +45,14 @@ for (i in filelist) {
 print(i)
   
 radarraster=stack(i)
-writeRaster(radarraster, filename=paste("D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar2/",str_remove(i, ".tif"),"_",names(radarraster),sep=""), bylayer=TRUE,format="GTiff")
+writeRaster(radarraster, filename=paste("D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/radar/",str_remove(i, ".tif"),"_",names(radarraster),sep=""), bylayer=TRUE,format="GTiff")
 
 }
 
 feanames=stack(filelist[1])
 feanames=names(feanames)
 
-workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar2/"
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/radar/"
 setwd(workingdirectory)
 
 for (j in feanames) {
@@ -62,7 +61,7 @@ for (j in feanames) {
   files_permetric=list.files(pattern = paste("*",j,".tif",sep=""))
   metric=mosaicList(files_permetric)
   
-  writeRaster(metric,paste("D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/radar2/merged/radar_metric",j,".tif",sep=""),overwrite=TRUE)
+  writeRaster(metric,paste("D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/radar/merged/optical_metric",j,".tif",sep=""),overwrite=TRUE)
   
 }
 
