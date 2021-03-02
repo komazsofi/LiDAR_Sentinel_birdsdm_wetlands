@@ -29,7 +29,7 @@ bird_ahn3ac=raster::intersect(birdsel_sp,ahn3_acq_sp)
 
 #bird_ahn3ac_filt=bird_ahn3ac[(bird_ahn3ac@data$year==bird_ahn3ac@data$Jaar),]
 bird_ahn3ac_filt=bird_ahn3ac[(bird_ahn3ac@data$OBJECTID==5),]
-ahn3_acq_sp_filt=ahn3_acq_sp[(ahn3_acq_sp@data$OBJECTID==5),]
+ahn3_acq_sp_filt=ahn3_acq_sp[(ahn3_acq_sp@data$OBJECTID==5 | ahn3_acq_sp@data$OBJECTID==6 | ahn3_acq_sp@data$OBJECTID==11),]
 
 surveyplot_filt=raster::intersect(surveyplot,ahn3_acq_sp_filt)
 
