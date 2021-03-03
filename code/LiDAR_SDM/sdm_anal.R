@@ -12,21 +12,24 @@ setwd(workingdirectory)
 filelist=list.files(pattern = "*.tif")
 all_predictor=stack(filelist)
 
-bird=readOGR(dsn="presabs_Sn_rand_studyarea.shp")
+bird=readOGR(dsn="presabs_Ba_rand_studyarea.shp")
 
-lidar=subset(all_predictor, c(1,2,3,4,5,6,7,8,9,10,11), drop=FALSE)
-optical=subset(all_predictor, c(12,13,14,15,16,17,18,19,20,21), drop=FALSE)
-radar=subset(all_predictor, c(22,23,24,25,26,27,28,29,30,31,32,33,34,35), drop=FALSE)
+landcover=subset(all_predictor, c(1,2,3,4,5), drop=FALSE)
+lidar=subset(all_predictor, c(6,7,8,9,10,11,12,13,14,15,16), drop=FALSE)
+optical=subset(all_predictor, c(17,18,19,20,21,22,23,24,25,26), drop=FALSE)
+radar=subset(all_predictor, c(27,28,29,30,31,32,33,34,35,36,37,38,39,40), drop=FALSE)
 
 # VIF
 
 vif_lidar=vifstep(lidar,th=3)
 vif_optical=vifstep(optical,th=3)
 vif_radar=vifstep(radar,th=3)
+vif_landcover=vifstep(landcover,th=3)
 
 lidar_vif=exclude(lidar,vif_lidar)
 optical_vif=exclude(optical,vif_optical)
 radar_vif=exclude(radar,vif_radar)
+landcover_vif=exclude(landcover,vif_landcover)
 
 # sdm only lidar
 
@@ -127,12 +130,42 @@ rcurve(model_all)
 vi_all <- getVarImp(model_all,method=c('rf'))
 plot(vi_all)
 
+# sdm lidar+optical+radar+landcover
+
+all_2=stack(optical_vif,radar_vif,lidar_vif,landcover_vif)
+
+data_forsdm_all_2 <- sdmData(formula=occurrence~., train=bird[,-c(1,2)], predictors=all_2)
+data_forsdm_all_2
+
+model_all_2 <- sdm(occurrence~.,data=data_forsdm_all_2,methods=c('rf'),replication=c('boot'),n=25,test.percent=30)
+model_all_2
+
+# interpretations
+rcurve(model_all_2)
+vi_all_2 <- getVarImp(model_all_2,method=c('rf'))
+plot(vi_all_2)
+
+# sdm only landcover
+
+data_forsdm_landcover <- sdmData(formula=occurrence~., train=bird[,-c(1,2)], predictors=landcover_vif)
+data_forsdm_landcover
+
+model_landcover <- sdm(occurrence~.,data=data_forsdm_landcover,methods=c('rf'),replication=c('boot'),n=25,test.percent=30)
+model_landcover
+
+# interpretations
+rcurve(model_landcover)
+vi_landcover <- getVarImp(model_landcover,method=c('rf'))
+plot(vi_landcover)
+
 # Export models
 
-write.sdm(model_lidar,'RFmean_Sn_lidar_boot_n25')
-write.sdm(model_optical,'RFmean_Sn_optical_boot_n25')
-write.sdm(model_radar,'RFmean_Sn_radar_boot_n25')
-write.sdm(model_sentinel,'RFmean_Sn_sentinel_boot_n25')
-write.sdm(model_lidar_optical,'RFmean_Sn_lidaroptical_boot_n25')
-write.sdm(model_lidar_radar,'RFmean_Sn_lidarradar_boot_n25')
-write.sdm(model_all,'RFmean_Sn_all_boot_n25')
+write.sdm(model_lidar,'RFmean_Ba_lidar_boot_n25')
+write.sdm(model_optical,'RFmean_Ba_optical_boot_n25')
+write.sdm(model_radar,'RFmean_Ba_radar_boot_n25')
+write.sdm(model_sentinel,'RFmean_Ba_sentinel_boot_n25')
+write.sdm(model_lidar_optical,'RFmean_Ba_lidaroptical_boot_n25')
+write.sdm(model_lidar_radar,'RFmean_Ba_lidarradar_boot_n25')
+write.sdm(model_all,'RFmean_Ba_all_boot_n25')
+write.sdm(model_all_2,'RFmean_Ba_all2_boot_n25')
+write.sdm(model_landcover,'RFmean_Ba_landcover_boot_n25')
