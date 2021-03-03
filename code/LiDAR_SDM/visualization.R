@@ -4,17 +4,23 @@ library(ggcorrplot)
 library(gridExtra)
 library(ggpubr)
 
-workingdir="D:/Sync/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper/both/"
+workingdir="D:/Sync/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both/"
 setwd(workingdir)
 
-RFmean_GrW_LiDAR=read.sdm("RFmean_GrW_LiDAR_small_boot_n5.sdm")
-RFmean_Sn_LiDAR=read.sdm("RFmean_Sn_LiDAR_small_boot_n5.sdm")
+RFmean_GrW_LiDAR=read.sdm("RFmean_GrW_lidar_boot_n25.sdm")
+RFmean_Sn_LiDAR=read.sdm("RFmean_Sn_lidar_boot_n25.sdm")
 
-RFmean_GrW_Sentinel=read.sdm("RFmean_GrW_Sentinel_small_boot_n5.sdm")
-RFmean_Sn_Sentinel=read.sdm("RFmean_Sn_Sentinel_small_boot_n5.sdm")
+RFmean_GrW_Sentinel=read.sdm("RFmean_GrW_sentinel_boot_n25.sdm")
+RFmean_Sn_Sentinel=read.sdm("RFmean_Sn_sentinel_boot_n25.sdm")
 
-RFmean_GrW=read.sdm("RFmean_GrW_Both_small_boot_n5.sdm")
-RFmean_Sn=read.sdm("RFmean_Sn_Both_small_boot_n5.sdm")
+RFmean_GrW=read.sdm("RFmean_GrW_all_boot_n25.sdm")
+RFmean_Sn=read.sdm("RFmean_Sn_all_boot_n25.sdm")
+
+RFmean_GrW_wld=read.sdm("RFmean_GrW_all2_boot_n25.sdm")
+RFmean_Sn_wld=read.sdm("RFmean_Sn_all2_boot_n25.sdm")
+
+RFmean_GrW_ld=read.sdm("RFmean_GrW_landcover_boot_n25.sdm")
+RFmean_Sn_ld=read.sdm("RFmean_Sn_landcover_boot_n25.sdm")
 
 ########## Feature importance
 # Combined Feature Importance LiDAR
@@ -30,9 +36,9 @@ Sn_feaimp$species<-"SW"
 
 feaimp=rbind(GrW_feaimp,Sn_feaimp)
 
-ggplot(feaimp, aes(x=variables, y=corTest, fill=species)) + geom_bar(stat="identity", color="black", position=position_dodge())+
+p1=ggplot(feaimp, aes(x=variables, y=corTest, fill=species)) + geom_bar(stat="identity", color="black", position=position_dodge())+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+coord_flip()+scale_fill_manual(values = c("goldenrod4", "deeppink"))+
-  theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")
+  theme_bw(base_size = 12)+ylab("Feature Importance")+xlab("Metrics")
 
 # Combined Feature Importance Sentinel
 
@@ -50,9 +56,9 @@ Sn_feaimp2$variables<-c("Prop_water","NDVI_sd_hor","VH_sd_hor","VH_sd_time","VV_
 
 feaimp2=rbind(GrW_feaimp2,Sn_feaimp2)
 
-ggplot(feaimp2, aes(x=variables, y=corTest, fill=species)) + geom_bar(stat="identity", color="black", position=position_dodge())+
+p2=ggplot(feaimp2, aes(x=variables, y=corTest, fill=species)) + geom_bar(stat="identity", color="black", position=position_dodge())+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+coord_flip()+scale_fill_manual(values = c("goldenrod4", "deeppink"))+
-  theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")
+  theme_bw(base_size = 12)+ylab("Feature Importance")+xlab("Metrics")
 
 # Combined Feature Importance LiDAR
 
@@ -70,9 +76,30 @@ Sn_feaimp3$species<-"SW"
 
 feaimp3=rbind(GrW_feaimp3,Sn_feaimp3)
 
-ggplot(feaimp3, aes(x=variables, y=corTest, fill=species)) + geom_bar(stat="identity", color="black", position=position_dodge())+
+p3=ggplot(feaimp3, aes(x=variables, y=corTest, fill=species)) + geom_bar(stat="identity", color="black", position=position_dodge())+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+coord_flip()+scale_fill_manual(values = c("goldenrod4", "deeppink"))+
-  theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")
+  theme_bw(base_size = 12)+ylab("Feature Importance")+xlab("Metrics")
+
+# Combined Feature Importance with landcover
+
+GrW_feaimp4=getVarImp(RFmean_GrW_wld)
+Sn_feaimp4=getVarImp(RFmean_Sn_wld)
+
+GrW_feaimp4=GrW_feaimp4@varImportanceMean[["corTest"]]
+Sn_feaimp4=Sn_feaimp4@varImportanceMean[["corTest"]]
+
+GrW_feaimp4$species<-"GrW"
+Sn_feaimp4$species<-"SW"
+
+feaimp4=rbind(GrW_feaimp4,Sn_feaimp4)
+
+p4=ggplot(feaimp4, aes(x=variables, y=corTest, fill=species)) + geom_bar(stat="identity", color="black", position=position_dodge())+
+  geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+coord_flip()+scale_fill_manual(values = c("goldenrod4", "deeppink"))+
+  theme_bw(base_size = 12)+ylab("Feature Importance")+xlab("Metrics")
+
+fig=grid.arrange(p1,p2,p3,p4,
+                 ncol=2,
+                 nrow=2)
 
 ########## Correlation among metrics
 
