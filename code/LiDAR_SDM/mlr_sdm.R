@@ -85,6 +85,6 @@ plot(imp)
 pdp.obj = Partial$new(predictor, feature = "optical_NDVIsd_hor_100m")
 plot(pdp.obj)
 
-effect = FeatureEffects$new(predictor)
+effect = FeatureEffects$new(predictor,method="pdp")
 effect$plot(features = "optical_NDVIsd_hor_100m")
 
