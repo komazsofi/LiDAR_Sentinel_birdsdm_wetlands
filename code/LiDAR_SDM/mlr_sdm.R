@@ -115,4 +115,10 @@ model_lidsent <- sdm(occurrence~.,data=data_forsdm_lidsent,methods=c('rf'),repli
 data_forsdm_lidall <- sdmData(formula=occurrence~., train=presabs[, c(1:19,20)])
 model_lidall <- sdm(occurrence~.,data=data_forsdm_lidall,methods=c('rf'),replication=c('cv','boot'),cv.folds=4,n=25,test.percent=30)
 
+write.sdm(model_lidar,'RFmean_Sn_lidar_bootcv')
+write.sdm(model_sentinel,'RFmean_Sn_sentinel_bootcv')
+write.sdm(model_landc,'RFmean_Sn_landc_bootcv')
+write.sdm(model_lidsent,'RFmean_Sn_lidsent_bootcv')
+write.sdm(model_lidall,'RFmean_Sn_lidall_bootcv')
+
 
