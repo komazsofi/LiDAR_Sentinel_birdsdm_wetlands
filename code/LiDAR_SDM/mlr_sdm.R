@@ -121,4 +121,22 @@ write.sdm(model_landc,'RFmean_Sn_landc_bootcv')
 write.sdm(model_lidsent,'RFmean_Sn_lidsent_bootcv')
 write.sdm(model_lidall,'RFmean_Sn_lidall_bootcv')
 
+acc_lidar=getEvaluation(model_lidar,stat=c('TSS','AUC'),opt=1)
+print(paste("AUC lidar:",mean(acc_lidar$AUC),"+_",sd(acc_lidar$AUC)))
+print(paste("TSS lidar:",mean(acc_lidar$TSS),"+_",sd(acc_lidar$TSS)))
 
+acc_sentinel=getEvaluation(model_sentinel,stat=c('TSS','AUC'),opt=1)
+print(paste("AUC sentinel:",mean(acc_sentinel$AUC),"+_",sd(acc_sentinel$AUC)))
+print(paste("TSS sentinel:",mean(acc_sentinel$TSS),"+_",sd(acc_sentinel$TSS)))
+
+acc_landc=getEvaluation(model_landc,stat=c('TSS','AUC'),opt=1)
+print(paste("AUC landc:",mean(acc_landc$AUC),"+_",sd(acc_landc$AUC)))
+print(paste("TSS landc:",mean(acc_landc$TSS),"+_",sd(acc_landc$TSS)))
+
+acc_lidsent=getEvaluation(model_lidsent,stat=c('TSS','AUC'),opt=1)
+print(paste("AUC lidarsentinel:",mean(acc_lidsent$AUC),"+_",sd(acc_lidsent$AUC)))
+print(paste("TSS lidarsentinel:",mean(acc_lidsent$TSS),"+_",sd(acc_lidsent$TSS)))
+
+acc_lidall=getEvaluation(model_lidall,stat=c('TSS','AUC'),opt=1)
+print(paste("AUC all:",mean(acc_lidall$AUC),"+_",sd(acc_lidall$AUC)))
+print(paste("TSS all:",mean(acc_lidall$TSS),"+_",sd(acc_lidall$TSS)))
