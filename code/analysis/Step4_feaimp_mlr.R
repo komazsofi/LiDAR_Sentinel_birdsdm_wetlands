@@ -101,22 +101,22 @@ feaimp_GrW_dfvis$color[12:18]<-3
 #visualize
 a=ggplot(feaimp_Sn_dfvis, aes(x=name, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 12)+ylab("Feature Importance")+xlab("Metrics")+
-  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Landcover","LiDAR","Sentinel"))
+  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+
+  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Landcover","LiDAR","Sentinel"))+ylim(0,0.15)
 
 b=ggplot(feaimp_Ba_dfvis, aes(x=name, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 12)+ylab("Feature Importance")+xlab("Metrics")+
-  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Landcover","LiDAR","Sentinel"))
+  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+
+  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Landcover","LiDAR","Sentinel"))+ylim(0,0.15)
 
 c=ggplot(feaimp_GrW_dfvis, aes(x=name, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 12)+ylab("Feature Importance")+xlab("Metrics")+
-  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Landcover","LiDAR","Sentinel"))
+  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+
+  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Landcover","LiDAR","Sentinel"))+ylim(0,0.15)
 
 p0=ggplot(feaimp_GrW_dfvis, aes(x=name, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = TRUE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 12)+ylab("Feature Importance")+xlab("Metrics")+
+  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+
   scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Landcover","LiDAR","Sentinel"))
 
 get_legend<-function(myggplot){
@@ -133,3 +133,5 @@ a,b,c,legend,
 ncol=2,
 nrow=2
 )
+
+ggsave("Fig2.png",plot = fig2,width = 15, height = 15)
