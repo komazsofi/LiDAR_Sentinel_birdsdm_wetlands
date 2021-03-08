@@ -106,22 +106,26 @@ write.csv(feaimp_Sn_dfvis,"feaimp_Sn_dfvis.csv")
 write.csv(feaimp_Ba_dfvis,"feaimp_Ba_dfvis.csv")
 write.csv(feaimp_GrW_dfvis,"feaimp_GrW_dfvis.csv")
 
+feaimp_Sn_dfvis=read.csv("feaimp_Sn_dfvis.csv")
+feaimp_Ba_dfvis=read.csv("feaimp_Ba_dfvis.csv")
+feaimp_GrW_dfvis=read.csv("feaimp_GrW_dfvis.csv")
+
 #visualize
 
 a=ggplot(feaimp_Sn_dfvis, aes(x=name, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
   coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+
-  scale_fill_manual(values = c("1" = "goldenrod4", "2" = "orange", "3" = "deeppink"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ylim(0,0.15)
+  scale_fill_manual(values = c("1" = "goldenrod4", "2" = "orange", "3" = "deeppink"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ylim(0,0.15)+ggtitle("A. Savis warbler")
 
 b=ggplot(feaimp_Ba_dfvis, aes(x=name, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
   coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+
-  scale_fill_manual(values = c("1" = "goldenrod4", "2" = "orange", "3" = "deeppink"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ylim(0,0.15)
+  scale_fill_manual(values = c("1" = "goldenrod4", "2" = "orange", "3" = "deeppink"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ylim(0,0.15)+ggtitle("B. Bearded reedling")
 
 c=ggplot(feaimp_GrW_dfvis, aes(x=name, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
   coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+
-  scale_fill_manual(values = c("1" = "goldenrod4", "2" = "orange", "3" = "deeppink"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ylim(0,0.15)
+  scale_fill_manual(values = c("1" = "goldenrod4", "2" = "orange", "3" = "deeppink"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ylim(0,0.15)+ggtitle("C. Great reed warbler")
 
 p0=ggplot(feaimp_GrW_dfvis, aes(x=name, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = TRUE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
@@ -143,4 +147,4 @@ ncol=2,
 nrow=2
 )
 
-ggsave("Fig2.png",plot = fig2,width = 15, height = 15)
+ggsave("Fig2.png",plot = fig2,width = 13, height = 15)
