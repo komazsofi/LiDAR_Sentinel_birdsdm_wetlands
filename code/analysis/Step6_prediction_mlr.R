@@ -152,11 +152,84 @@ predictlandc_GrW_coord=cbind(predictlandc_GrW,predictors_crop_df[,c(1,2)])
 
 GrW_predlandc_raster=rasterFromXYZ(predictlandc_GrW_coord[,c(4,5,2)])
 
-rasters=stack(Sn_predlid_raster,Sn_predsent_raster,Sn_predlandc_raster,
-              Ba_predlid_raster,Ba_predsent_raster,Ba_predlandc_raster,
-              GrW_predlid_raster,GrW_predsent_raster,GrW_predlandc_raster)
-
-writeRaster(rasters,"predictedmaps.grd",overwrite=TRUE)
-rasters=stack("predictedmaps.grd")
-
 # visualization
+
+a=ggplot() + geom_raster(data = predictlandc_Sn_coord , aes(x = x, y = y, fill = prob.1),show.legend = FALSE)+theme_bw(base_size = 20)+
+  scale_fill_gradient2(midpoint = 0.5, low = "black", mid = "white",
+                       high = "brown", space = "Lab" )+ggtitle("a. Land cover")
+
+b=ggplot() + geom_raster(data = predictlid_Sn_coord , aes(x = x, y = y, fill = prob.1),show.legend = FALSE)+theme_bw(base_size = 20)+
+  scale_fill_gradient2(midpoint = 0.5, low = "black", mid = "white",
+                       high = "brown", space = "Lab" )+ggtitle("LiDAR")
+
+c=ggplot() + geom_raster(data = predictsent_Sn_coord , aes(x = x, y = y, fill = prob.1),show.legend = FALSE)+theme_bw(base_size = 20)+
+  scale_fill_gradient2(midpoint = 0.5, low = "black", mid = "white",
+                       high = "brown", space = "Lab")+ggtitle("b. Sentinel")
+
+d=ggplot() + geom_raster(data = predictlandc_Ba_coord , aes(x = x, y = y, fill = prob.1),show.legend = FALSE)+theme_bw(base_size = 20)+
+  scale_fill_gradient2(midpoint = 0.5, low = "black", mid = "white",
+                       high = "brown", space = "Lab" )+ggtitle("c. Land cover")
+
+e=ggplot() + geom_raster(data = predictlid_Ba_coord , aes(x = x, y = y, fill = prob.1),show.legend = FALSE)+theme_bw(base_size = 20)+
+  scale_fill_gradient2(midpoint = 0.5, low = "black", mid = "white",
+                       high = "brown", space = "Lab" )+ggtitle("LiDAR")
+
+f=ggplot() + geom_raster(data = predictsent_Ba_coord , aes(x = x, y = y, fill = prob.1),show.legend = FALSE)+theme_bw(base_size = 20)+
+  scale_fill_gradient2(midpoint = 0.5, low = "black", mid = "white",
+                       high = "brown", space = "Lab")+ggtitle("Sentinel")
+
+g=ggplot() + geom_raster(data = predictlandc_GrW_coord , aes(x = x, y = y, fill = prob.1),show.legend = FALSE)+theme_bw(base_size = 20)+
+  scale_fill_gradient2(midpoint = 0.5, low = "black", mid = "white",
+                       high = "brown", space = "Lab" )+ggtitle("e. Land cover")
+
+h=ggplot() + geom_raster(data = predictlid_GrW_coord , aes(x = x, y = y, fill = prob.1),show.legend = FALSE)+theme_bw(base_size = 20)+
+  scale_fill_gradient2(midpoint = 0.5, low = "black", mid = "white",
+                       high = "brown", space = "Lab" )+ggtitle("f. LiDAR")
+
+i=ggplot() + geom_raster(data = predictsent_GrW_coord , aes(x = x, y = y, fill = prob.1),show.legend = FALSE)+theme_bw(base_size = 20)+
+  scale_fill_gradient2(midpoint = 0.5, low = "black", mid = "white",
+                       high = "brown", space = "Lab")+ggtitle("g. Sentinel")
+
+p0=ggplot() + geom_raster(data = predictsent_Sn_coord , aes(x = x, y = y, fill = prob.1),show.legend = TRUE)+theme_bw(base_size = 20)+
+  scale_fill_gradient2(midpoint = 0.5, low = "black", mid = "white",
+                       high = "brown", space = "Lab",name="Probability",breaks=c(0,0.25,0.5,0.75,1),labels=c(0,0.25,0.5,0.75,1))+ggtitle("Sentinel")
+
+get_legend<-function(myggplot){
+  tmp <- ggplot_gtable(ggplot_build(myggplot))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  legend <- tmp$grobs[[leg]]
+  return(legend)
+}
+
+legend <- get_legend(p0)
+
+t1 <- textGrob("Savis's warbler",gp=gpar(fontsize=20, col="black", fontface="bold"))
+t2 <- textGrob("Bearded reedling",gp=gpar(fontsize=20, col="black", fontface="bold"))
+t3 <- textGrob("Great reed warbler",gp=gpar(fontsize=20, col="black", fontface="bold"))
+
+fig4=grid.arrange(
+  a,b,c,legend,
+  d,e,f,
+  g,h,i,
+  t1,t2,t3,
+  ncol=4,
+  nrow=6,
+  layout_matrix=rbind(c(11,11,11,4),c(1,2,3,4),c(12,12,12,4),c(5,6,7,4),c(13,13,13,4),c(8,9,10,4)),
+  widths = c(1,1,1,0.3),
+  heights = c(0.3,1,0.3,1,0.3,1)
+)
+
+ggsave("Fig4.png",plot = fig4,width = 18, height = 15)
+
+fig4b=grid.arrange(
+  a,b,c,legend,
+  g,h,i,
+  t1,t3,
+  ncol=4,
+  nrow=4,
+  layout_matrix=rbind(c(8,8,8,4),c(1,2,3,4),c(9,9,9,4),c(5,6,7,4)),
+  widths = c(1,1,1,0.3),
+  heights = c(0.2,1,0.2,1)
+)
+
+ggsave("Fig4b.png",plot = fig4b,width = 15, height = 10)

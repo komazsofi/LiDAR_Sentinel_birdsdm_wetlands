@@ -95,7 +95,7 @@ h=ggplot(pd_GrW_resp,aes(x=optical_NDVIsd_hor_100m,y=yes))+geom_line(color="gold
 i=ggplot(pd_GrW_resp,aes(x=lidar_VD_2_3,y=yes))+geom_line(color="orange",size=4)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_VD_2_3")+ylim(0,1)
 j=ggplot(pd_GrW_resp,aes(x=lidar_HH_reedveg_prop,y=yes))+geom_line(color="orange",size=4)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)
 
-t1 <- textGrob("A. Savis's Warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
+t1 <- textGrob("A. Savis's warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
 t2 <- textGrob("B. Bearded reedling",gp=gpar(fontsize=16, col="black", fontface="bold"))
 t3 <- textGrob("C. Great reed warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
 
