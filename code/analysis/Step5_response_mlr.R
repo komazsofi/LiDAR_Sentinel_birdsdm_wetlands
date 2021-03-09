@@ -83,21 +83,21 @@ pd_GrW_resp=read.csv("pd_GrW_resp.csv")
 
 # visualization
 
-a=ggplot(pd_Sn_resp,aes(x=lidar_HH_reedveg_prop,y=yes))+geom_line(color="orange",size=4)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)
-b=ggplot(pd_Sn_resp,aes(x=landcover_propswamp,y=yes))+geom_line(color="deeppink",size=4)+theme_bw(base_size = 16)+ylab("Probability")+xlab("landcover_propswamp")+ylim(0,1)
-c=ggplot(pd_Sn_resp,aes(x=lidar_C_ppr,y=yes))+geom_line(color="orange",size=4)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_C_ppr")+ylim(0,1)
+a=ggplot(pd_Sn_resp,aes(x=lidar_HH_reedveg_prop,y=yes))+geom_line(color="orange",size=2)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)+ggtitle("c.")
+b=ggplot(pd_Sn_resp,aes(x=landcover_propswamp,y=yes))+geom_line(color="deeppink",size=2)+theme_bw(base_size = 16)+ylab("Probability")+xlab("landcover_propswamp")+ylim(0,1)+ggtitle("d.")
+c=ggplot(pd_Sn_resp,aes(x=lidar_C_ppr,y=yes))+geom_line(color="orange",size=2)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_C_ppr")+ylim(0,1)+ggtitle("e.")
 
-e=ggplot(pd_Ba_resp,aes(x=lidar_HH_reedveg_prop,y=yes))+geom_line(color="orange",size=4)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)
-f=ggplot(pd_Ba_resp,aes(x=optical_NDVIstd,y=yes))+geom_line(color="goldenrod4",size=4)+theme_bw(base_size = 16)+ylab("Probability")+xlab("optical_NDVIstd")+ylim(0,1)
-g=ggplot(pd_Ba_resp,aes(x=lidar_VD_1_2,y=yes))+geom_line(color="orange",size=4)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_VD_1_2")+ylim(0,1)
+e=ggplot(pd_Ba_resp,aes(x=lidar_HH_reedveg_prop,y=yes))+geom_line(color="orange",size=2)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)
+f=ggplot(pd_Ba_resp,aes(x=optical_NDVIstd,y=yes))+geom_line(color="goldenrod4",size=2)+theme_bw(base_size = 16)+ylab("Probability")+xlab("optical_NDVIstd")+ylim(0,1)
+g=ggplot(pd_Ba_resp,aes(x=lidar_VD_1_2,y=yes))+geom_line(color="orange",size=2)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_VD_1_2")+ylim(0,1)
 
-h=ggplot(pd_GrW_resp,aes(x=optical_NDVIsd_hor_100m,y=yes))+geom_line(color="goldenrod4",size=4)+theme_bw(base_size = 16)+ylab("Probability")+xlab("optical_NDVIsd_hor_100m")+ylim(0,1)
-i=ggplot(pd_GrW_resp,aes(x=lidar_VD_2_3,y=yes))+geom_line(color="orange",size=4)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_VD_2_3")+ylim(0,1)
-j=ggplot(pd_GrW_resp,aes(x=lidar_HH_reedveg_prop,y=yes))+geom_line(color="orange",size=4)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)
+h=ggplot(pd_GrW_resp,aes(x=optical_NDVIsd_hor_100m,y=yes))+geom_line(color="goldenrod4",size=2)+theme_bw(base_size = 16)+ylab("Probability")+xlab("optical_NDVIsd_hor_100m")+ylim(0,1)+ggtitle("f.")
+i=ggplot(pd_GrW_resp,aes(x=lidar_VD_2_3,y=yes))+geom_line(color="orange",size=2)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_VD_2_3")+ylim(0,1)+ggtitle("g.")
+j=ggplot(pd_GrW_resp,aes(x=lidar_HH_reedveg_prop,y=yes))+geom_line(color="orange",size=2)+theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)+ggtitle("h.")
 
-t1 <- textGrob("A. Savis's warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
-t2 <- textGrob("B. Bearded reedling",gp=gpar(fontsize=16, col="black", fontface="bold"))
-t3 <- textGrob("C. Great reed warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
+t1 <- textGrob("Savis's warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
+t2 <- textGrob("Bearded reedling",gp=gpar(fontsize=16, col="black", fontface="bold"))
+t3 <- textGrob("Great reed warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
 
 p0=ggplot(pd_Sn_resp,aes(x=lidar_HH_reedveg_prop,y=yes))+geom_line(aes(color="goldenrod4"),size=4)+
   geom_line(aes(color="orange"),size=4)+geom_line(aes(color="deeppink"),size=4)+
@@ -124,3 +124,15 @@ fig3=grid.arrange(
 )
 
 ggsave("Fig3.png",plot = fig3,width = 10, height = 13)
+
+fig3b=grid.arrange(
+  a,b,c,h,i,j,
+  t1,t3,legend,
+  ncol=3,
+  nrow=5,
+  layout_matrix=rbind(c(7,7,7),c(1,2,3),c(8,8,8),c(4,5,6), c(9,9,9)),
+  widths = c(1,1,1),
+  heights = c(0.2,4,0.2,4,0.3)
+)
+
+ggsave("Fig3b.png",plot = fig3b,width = 16, height = 8)

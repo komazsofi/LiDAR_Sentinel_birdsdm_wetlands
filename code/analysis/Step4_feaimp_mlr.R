@@ -115,7 +115,7 @@ feaimp_GrW_dfvis=read.csv("feaimp_GrW_dfvis.csv")
 a=ggplot(feaimp_Sn_dfvis, aes(x=name, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
   coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+
-  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ylim(0,0.15)+ggtitle("A. Savis warbler")
+  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ylim(0,0.15)+ggtitle("a. Savis warbler")
 
 b=ggplot(feaimp_Ba_dfvis, aes(x=name, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
@@ -125,7 +125,7 @@ b=ggplot(feaimp_Ba_dfvis, aes(x=name, y=mean,fill=as.factor(color))) + geom_bar(
 c=ggplot(feaimp_GrW_dfvis, aes(x=name, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
   coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+
-  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ylim(0,0.15)+ggtitle("C. Great reed warbler")
+  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ylim(0,0.15)+ggtitle("b. Great reed warbler")
 
 p0=ggplot(feaimp_GrW_dfvis, aes(x=name, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = TRUE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
@@ -148,3 +148,12 @@ nrow=2
 )
 
 ggsave("Fig2.png",plot = fig2,width = 13, height = 15)
+
+fig2b=grid.arrange(
+  a,c,legend,
+  ncol=3,
+  nrow=1,
+  widths = c(1,1,0.3)
+)
+
+ggsave("Fig2b.png",plot = fig2b,width = 16, height = 8)
