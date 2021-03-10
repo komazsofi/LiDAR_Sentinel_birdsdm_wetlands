@@ -160,11 +160,11 @@ a=ggplot() + geom_raster(data = predictlandc_Sn_coord , aes(x = x, y = y, fill =
 
 b=ggplot() + geom_raster(data = predictlid_Sn_coord , aes(x = x, y = y, fill = prob.1),show.legend = FALSE)+theme_bw(base_size = 20)+
   scale_fill_gradient2(midpoint = 0.5, low = "black", mid = "white",
-                       high = "brown", space = "Lab" )+ggtitle("LiDAR")
+                       high = "brown", space = "Lab" )+ggtitle("b. LiDAR")
 
 c=ggplot() + geom_raster(data = predictsent_Sn_coord , aes(x = x, y = y, fill = prob.1),show.legend = FALSE)+theme_bw(base_size = 20)+
   scale_fill_gradient2(midpoint = 0.5, low = "black", mid = "white",
-                       high = "brown", space = "Lab")+ggtitle("b. Sentinel")
+                       high = "brown", space = "Lab")+ggtitle("c. Sentinel")
 
 d=ggplot() + geom_raster(data = predictlandc_Ba_coord , aes(x = x, y = y, fill = prob.1),show.legend = FALSE)+theme_bw(base_size = 20)+
   scale_fill_gradient2(midpoint = 0.5, low = "black", mid = "white",
