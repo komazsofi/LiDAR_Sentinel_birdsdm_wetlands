@@ -55,5 +55,6 @@ accuracy_GrW2$modeltype<-"ensemble"
 accuracy_GrW3=rbind(accuracy_GrW,accuracy_GrW2)
 
 accuracy_GrW3$RStype <- factor(accuracy_GrW3$RStype , levels=c("lidar", "sentinel", "landc", "lidsent","lidall"))
+accuracy_GrW3$modeltype <- factor(accuracy_GrW3$modeltype , levels=c("glm","maxent","rf","ensemble"))
 
 ggplot(accuracy_GrW3, aes(x=RStype, y=AUC,fill=modeltype)) + geom_boxplot()+theme_bw(base_size = 20)+ylab("AUC")+xlab("Remote Sensing products")+ggtitle("a. Great reed wrabler")
