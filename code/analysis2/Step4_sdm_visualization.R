@@ -25,7 +25,7 @@ feaimp_GrW_dfvis$color[11:17]<-1
 a=ggplot(feaimp_GrW_dfvis, aes(x=variables, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
   coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+
-  scale_fill_manual(values = c("1" = "goldenrod4", "2" = "orange", "3" = "deeppink"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ylim(0,0.3)+ggtitle("a. Great reed warbler")
+  scale_fill_manual(values = c("1" = "goldenrod4", "2" = "orange", "3" = "deeppink"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ggtitle("a. Great reed warbler")
 
 p0=ggplot(feaimp_GrW_dfvis, aes(x=variables, y=mean,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = TRUE)+
   geom_errorbar(aes(ymin=min, ymax=max), width=.2,position=position_dodge(.9))+
@@ -49,7 +49,11 @@ fig2b=grid.arrange(
 )
 
 # Accuracy
+accuracy_GrW2=accuracy_GrW
+accuracy_GrW2$modeltype<-"ensemble"
 
-accuracy_GrW$RStype <- factor(accuracy_GrW$RStype , levels=c("lidar", "sentinel", "landc", "lidsent","lidall"))
+accuracy_GrW3=rbind(accuracy_GrW,accuracy_GrW2)
 
-ggplot(accuracy_GrW, aes(x=RStype, y=AUC)) + geom_boxplot()+theme_bw(base_size = 20)+ylab("AUC")+xlab("Remote Sensing products")+ggtitle("a. Great reed wrabler")
+accuracy_GrW3$RStype <- factor(accuracy_GrW3$RStype , levels=c("lidar", "sentinel", "landc", "lidsent","lidall"))
+
+ggplot(accuracy_GrW3, aes(x=RStype, y=AUC,fill=modeltype)) + geom_boxplot()+theme_bw(base_size = 20)+ylab("AUC")+xlab("Remote Sensing products")+ggtitle("a. Great reed wrabler")
