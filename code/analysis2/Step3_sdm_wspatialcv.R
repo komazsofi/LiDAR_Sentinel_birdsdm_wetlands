@@ -35,7 +35,7 @@ sb <- spatialBlock(speciesData = mydata_clean2,
                    selection = "random",
                    iteration = 100, # find evenly dispersed folds
                    biomod2Format = TRUE,
-                   numLimit=80)
+                   numLimit=50)
 
 folds <- sb$folds
 
@@ -81,15 +81,18 @@ for(k in seq_len(length(folds))){
   model_lidall_acc$RStype<-"lidall"
   
   newline=rbind(model_lidar_acc,model_sentinel_acc,model_landc_acc,model_lidsent_acc,model_lidall_acc)
-  
   accuracy <- rbind(accuracy, newline)
   
   vi <- getVarImp(model_lidall, method='rf')
   newline2=vi@varImportanceMean[["AUCtest"]]
-  
   feaimp=rbind(feaimp,newline2)
+  
+  
 }
 
 accuracy=accuracy[complete.cases(accuracy), ]
 feaimp=feaimp[complete.cases(feaimp), ]
+
+write.csv(accuracy,"GrW_acc_test.csv")
+write.csv(feaimp,"GrW_feaimp_test.csv")
 
