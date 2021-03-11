@@ -42,9 +42,11 @@ folds <- sb$folds
 # with sdm package
 mydata_clean=presabs
 
-accuracy=data.frame(matrix(ncol = 5, nrow = 0))
+accuracy=data.frame(matrix(ncol = 6, nrow = 25))
+names(accuracy)<-c("modelID","AUC","Deviance","TSS","Kappa","RStype")
 
-feaimp=data.frame(matrix(ncol = 0, nrow = 17))
+feaimp=data.frame(matrix(ncol = 4, nrow = 17))
+names(feaimp)<-c("variables","AUCtest","lower","upper")
 
 
 for(k in seq_len(length(folds))){
@@ -72,14 +74,22 @@ for(k in seq_len(length(folds))){
   model_lidsent_acc=getEvaluation(model_lidsent,stat=c('AUC','TSS','Deviance','Kappa'))
   model_lidall_acc=getEvaluation(model_lidall,stat=c('AUC','TSS','Deviance','Kappa'))
   
-  newline <- data.frame(t(c(mean(model_lidar_acc$AUC),mean(model_sentinel_acc$AUC),mean(model_landc_acc$AUC),mean(model_lidsent_acc$AUC),
-                            mean(model_lidall_acc$AUC))))
+  model_lidar_acc$RStype<-"lidar"
+  model_sentinel_acc$RStype<-"sentinel"
+  model_landc_acc$RStype<-"landc"
+  model_lidsent_acc$RStype<-"lidsent"
+  model_lidall_acc$RStype<-"lidall"
+  
+  newline=rbind(model_lidar_acc,model_sentinel_acc,model_landc_acc,model_lidsent_acc,model_lidall_acc)
   
   accuracy <- rbind(accuracy, newline)
   
   vi <- getVarImp(model_lidall, method='rf')
   newline2=vi@varImportanceMean[["AUCtest"]]
   
-  feaimp=cbind(feaimp,newline2)
+  feaimp=rbind(feaimp,newline2)
 }
+
+accuracy=accuracy[complete.cases(accuracy), ]
+feaimp=feaimp[complete.cases(feaimp), ]
 
