@@ -18,8 +18,8 @@ setwd(workingdirectory)
 filelist=list.files(pattern = "*.tif")
 all_predictor=stack(filelist)
 
-#presabs=read.csv("presabs_Sn.csv")
-presabs=read.csv("presabs_GrW.csv")
+presabs=read.csv("presabs_Sn.csv")
+#presabs=read.csv("presabs_GrW.csv")
 presabs=presabs[,-1]
 
 presabs_sampl <- ovun.sample(occurrence ~ ., data = presabs, method = "both", p=0.5, seed = 1)$data
@@ -106,11 +106,11 @@ accuracy$modeltype[accuracy$modelID >39] <- "rf"
 
 feaimp=feaimp[complete.cases(feaimp), ]
 
-write.csv(accuracy,"GrW_acc_test.csv")
-write.csv(feaimp,"GrW_feaimp_test.csv")
+#write.csv(accuracy,"GrW_acc_test.csv")
+#write.csv(feaimp,"GrW_feaimp_test.csv")
 
-#write.csv(accuracy,"Sn_acc_test.csv")
-#write.csv(feaimp,"Sn_feaimp_test.csv")
+write.csv(accuracy,"Sn_acc_test.csv")
+write.csv(feaimp,"Sn_feaimp_test.csv")
 
 # merge sdm objects
 
@@ -144,6 +144,8 @@ testSet5 <- unlist(folds[[5]][2])
 data_forsdm_lidall5 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet5, c(2:18,19)],test=mydata_clean[testSet5,c(2:18,19)])
 model_lidall5 <- sdm(occurrence~.,data=data_forsdm_lidall5,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
 
-m_merged_GrW=model_lidall1+model_lidall2+model_lidall3+model_lidall4+model_lidall5
+#m_merged_GrW=model_lidall1+model_lidall2+model_lidall3+model_lidall4+model_lidall5
+m_merged_Sn=model_lidall1+model_lidall2+model_lidall3+model_lidall4+model_lidall5
 
-write.sdm(m_merged_GrW,"m_merged_GrW",overwrite = TRUE)
+#write.sdm(m_merged_GrW,"m_merged_GrW",overwrite = TRUE)
+write.sdm(m_merged_Sn,"m_merged_Sn",overwrite = TRUE)
