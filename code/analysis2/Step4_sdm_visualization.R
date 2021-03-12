@@ -108,12 +108,14 @@ legend2 <- get_legend(p1)
 
 fig1b=grid.arrange(
   c,d,legend2,
-  ncol=3,
-  nrow=1,
-  widths = c(1,1,0.3)
+  ncol=2,
+  nrow=2,
+  layout_matrix=rbind(c(1,3),c(2,3)),
+  widths = c(2,0.5),
+  heights = c(1,1)
 )
 
-ggsave("fig2v2.png",plot = fig1b,width = 22, height =9)
+ggsave("fig2v2.png",plot = fig1b,width = 14, height =10)
 
 # report accuracy table
 
