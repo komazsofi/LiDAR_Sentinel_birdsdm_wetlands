@@ -112,3 +112,38 @@ write.csv(feaimp,"GrW_feaimp_test.csv")
 #write.csv(accuracy,"Sn_acc_test.csv")
 #write.csv(feaimp,"Sn_feaimp_test.csv")
 
+# merge sdm objects
+
+trainSet1 <- unlist(folds[[1]][1]) 
+testSet1 <- unlist(folds[[1]][2])
+
+data_forsdm_lidall1 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet1, c(2:18,19)],test=mydata_clean[testSet1,c(2:18,19)])
+model_lidall1 <- sdm(occurrence~.,data=data_forsdm_lidall1,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+trainSet2 <- unlist(folds[[2]][1]) 
+testSet2 <- unlist(folds[[2]][2])
+
+data_forsdm_lidall2 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet2, c(2:18,19)],test=mydata_clean[testSet2,c(2:18,19)])
+model_lidall2 <- sdm(occurrence~.,data=data_forsdm_lidall2,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+trainSet3 <- unlist(folds[[3]][1]) 
+testSet3 <- unlist(folds[[3]][2])
+
+data_forsdm_lidall3 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet3, c(2:18,19)],test=mydata_clean[testSet3,c(2:18,19)])
+model_lidall3 <- sdm(occurrence~.,data=data_forsdm_lidall3,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+trainSet4 <- unlist(folds[[4]][1]) 
+testSet4 <- unlist(folds[[4]][2])
+
+data_forsdm_lidall4 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet4, c(2:18,19)],test=mydata_clean[testSet4,c(2:18,19)])
+model_lidall4 <- sdm(occurrence~.,data=data_forsdm_lidall4,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+trainSet5 <- unlist(folds[[5]][1]) 
+testSet5 <- unlist(folds[[5]][2])
+
+data_forsdm_lidall5 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet5, c(2:18,19)],test=mydata_clean[testSet5,c(2:18,19)])
+model_lidall5 <- sdm(occurrence~.,data=data_forsdm_lidall5,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+m_merged_GrW=model_lidall1+model_lidall2+model_lidall3+model_lidall4+model_lidall5
+
+write.sdm(m_merged_GrW,"m_merged_GrW",overwrite = TRUE)
