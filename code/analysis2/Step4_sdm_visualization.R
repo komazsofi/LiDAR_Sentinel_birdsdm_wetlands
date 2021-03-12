@@ -84,10 +84,18 @@ accuracy_Sn3=rbind(accuracy_Sn,accuracy_Sn2)
 accuracy_Sn3$RStype <- factor(accuracy_Sn3$RStype , levels=c("lidar", "sentinel", "landc", "lidsent","lidall"))
 accuracy_Sn3$modeltype <- factor(accuracy_Sn3$modeltype , levels=c("glm","maxent","rf","ensemble"))
 
-c=ggplot(accuracy_GrW3, aes(x=RStype, y=AUC,fill=modeltype)) + geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+xlab("Remote Sensing products")+ggtitle("a. Great reed wrabler")
-d=ggplot(accuracy_Sn3, aes(x=RStype, y=AUC,fill=modeltype)) + geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+xlab("Remote Sensing products")+ggtitle("b. Savi's wrabler")
+c=ggplot(accuracy_GrW3, aes(x=RStype, y=AUC,fill=modeltype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0.2,1)+
+  xlab("Remote Sensing data")+ggtitle("a. Great reed wrabler")+
+  scale_x_discrete(labels=c("lidar"="LiDAR","sentinel"="Sentinel","landc"="Land cover","lidsent"="LiDAR+Sentinel","lidall"="All"))
+d=ggplot(accuracy_Sn3, aes(x=RStype, y=AUC,fill=modeltype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+
+  ylab("AUC")+xlab("Remote Sensing data")+ggtitle("b. Savi's wrabler")+ylim(0.2,1)+
+  scale_x_discrete(labels=c("lidar"="LiDAR","sentinel"="Sentinel","landc"="Land cover","lidsent"="LiDAR+Sentinel","lidall"="All"))
 
-p1=ggplot(accuracy_Sn3, aes(x=RStype, y=AUC,fill=modeltype)) + geom_boxplot()+theme_bw(base_size = 20)+ylab("AUC")+xlab("Remote Sensing products")+ggtitle("b. Savi's wrabler")
+p1=ggplot(accuracy_Sn3, aes(x=RStype, y=AUC,fill=modeltype)) + 
+  geom_boxplot()+theme_bw(base_size = 20)+ylab("AUC")+xlab("Remote Sensing products")+
+  ggtitle("b. Savi's wrabler")+guides(fill=guide_legend(title="SDM type"))
 
 get_legend<-function(myggplot){
   tmp <- ggplot_gtable(ggplot_build(myggplot))
@@ -105,7 +113,7 @@ fig1b=grid.arrange(
   widths = c(1,1,0.3)
 )
 
-ggsave("fig2v2.png",plot = fig1b,width = 16, height =8)
+ggsave("fig2v2.png",plot = fig1b,width = 22, height =9)
 
 # report accuracy table
 
