@@ -18,8 +18,8 @@ setwd(workingdirectory)
 filelist=list.files(pattern = "*.tif")
 all_predictor=stack(filelist)
 
-presabs=read.csv("presabs_Sn.csv")
-#presabs=read.csv("presabs_GrW.csv")
+#presabs=read.csv("presabs_Sn.csv")
+presabs=read.csv("presabs_GrW.csv")
 presabs=presabs[,-1]
 
 presabs_sampl <- ovun.sample(occurrence ~ ., data = presabs, method = "both", p=0.5, seed = 1)$data
@@ -42,7 +42,7 @@ sb <- spatialBlock(speciesData = mydata_clean2,
                    biomod2Format = TRUE,
                    numLimit=50)
 
-saveRDS(sb, file = "sb_Sn.rds")
+#saveRDS(sb, file = "sb_Sn.rds")
 #saveRDS(sb, file = "sb_GrW.rds")
 
 folds <- sb$folds
@@ -106,9 +106,9 @@ accuracy$modeltype[accuracy$modelID >39] <- "rf"
 
 feaimp=feaimp[complete.cases(feaimp), ]
 
-#write.csv(accuracy,"GrW_acc_test.csv")
-#write.csv(feaimp,"GrW_feaimp_test.csv")
+write.csv(accuracy,"GrW_acc_test.csv")
+write.csv(feaimp,"GrW_feaimp_test.csv")
 
-write.csv(accuracy,"Sn_acc_test.csv")
-write.csv(feaimp,"Sn_feaimp_test.csv")
+#write.csv(accuracy,"Sn_acc_test.csv")
+#write.csv(feaimp,"Sn_feaimp_test.csv")
 
