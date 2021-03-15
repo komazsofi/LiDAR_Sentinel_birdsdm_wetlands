@@ -8,8 +8,6 @@ library(ggplot2)
 library(sdm)
 library(usdm)
 
-library(ROSE)
-
 workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both/"
 setwd(workingdirectory)
 
@@ -18,14 +16,11 @@ setwd(workingdirectory)
 filelist=list.files(pattern = "*.tif")
 all_predictor=stack(filelist)
 
-presabs=read.csv("presabs_Sn.csv")
-#presabs=read.csv("presabs_GrW.csv")
+#presabs=read.csv("presabs_Sn2.csv")
+presabs=read.csv("presabs_GrW2.csv")
 presabs=presabs[,-1]
 
-presabs_sampl <- ovun.sample(occurrence ~ ., data = presabs, method = "both", p=0.5, seed = 1)$data
-table(presabs_sampl$occurrence)
-
-mydata_clean2=presabs_sampl
+mydata_clean2=presabs
 
 coordinates(mydata_clean2)=~x+y
 proj4string(mydata_clean2)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
