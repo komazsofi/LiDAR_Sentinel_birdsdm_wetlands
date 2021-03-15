@@ -16,8 +16,8 @@ setwd(workingdirectory)
 filelist=list.files(pattern = "*.tif")
 all_predictor=stack(filelist)
 
-#presabs=read.csv("presabs_Sn2.csv")
-presabs=read.csv("presabs_GrW2.csv")
+presabs=read.csv("presabs_Sn2.csv")
+#presabs=read.csv("presabs_GrW2.csv")
 presabs=presabs[,-1]
 
 mydata_clean2=presabs
@@ -139,8 +139,8 @@ m_merged_lidsent=model_lidsent1+model_lidsent2+model_lidsent3+model_lidsent4+mod
 m_merged_all=model_lidall1+model_lidall2+model_lidall3+model_lidall4+model_lidall5
 
 # Export
-write.sdm(m_merged_lidar,"merged_GrW_lidar",overwrite = TRUE)
-write.sdm(m_merged_sentinel,"merged_GrW_sentinel",overwrite = TRUE)
-write.sdm(m_merged_landc,"merged_GrW_landc",overwrite = TRUE)
-write.sdm(m_merged_lidsent,"merged_GrW_lidsent",overwrite = TRUE)
-write.sdm(m_merged_all,"merged_GrW_all",overwrite = TRUE)
+write.sdm(m_merged_lidar,"merged_Sn_lidar",overwrite = TRUE)
+write.sdm(m_merged_sentinel,"merged_Sn_sentinel",overwrite = TRUE)
+write.sdm(m_merged_landc,"merged_Sn_landc",overwrite = TRUE)
+write.sdm(m_merged_lidsent,"merged_Sn_lidsent",overwrite = TRUE)
+write.sdm(m_merged_all,"merged_Sn_all",overwrite = TRUE)

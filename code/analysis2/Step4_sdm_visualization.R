@@ -9,14 +9,9 @@ workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataproce
 setwd(workingdirectory)
 
 # Import
+m_merged_GrW=read.sdm("merged_GrW_all.sdm")
 
-feaimp_GrW=read.csv("GrW_feaimp_test.csv")
-accuracy_GrW=read.csv("GrW_acc_test.csv")
-m_merged_GrW=read.sdm("m_merged_GrW.sdm")
-
-feaimp_Sn=read.csv("Sn_feaimp_test.csv")
-accuracy_Sn=read.csv("Sn_acc_test.csv")
-m_merged_Sn=read.sdm("m_merged_Sn.sdm")
+m_merged_Sn=read.sdm("merged_Sn_all.sdm")
 
 # Feature importance
 
@@ -38,7 +33,7 @@ feaimp_Sn_dfvis$color[11:17]<-1
 
 a1=ggplot(feaimp_GrW_dfvis, aes(x=variables, y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(0, 0.4)+
+  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(-0.01, 0.4)+
   scale_fill_manual(values = c("1" = "goldenrod4", "2" = "orange", "3" = "deeppink"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ggtitle("a. Great reed warbler")
 
 b1=ggplot(feaimp_Sn_dfvis, aes(x=variables, y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
@@ -66,66 +61,6 @@ fig2b=grid.arrange(
   nrow=1,
   widths = c(1,1,0.3)
 )
-
-# Accuracy
-accuracy_GrW2=accuracy_GrW
-accuracy_GrW2$modeltype<-"ensemble"
-
-accuracy_GrW3=rbind(accuracy_GrW,accuracy_GrW2)
-
-accuracy_GrW3$RStype <- factor(accuracy_GrW3$RStype , levels=c("lidar", "sentinel", "landc", "lidsent","lidall"))
-accuracy_GrW3$modeltype <- factor(accuracy_GrW3$modeltype , levels=c("glm","maxent","rf","ensemble"))
-
-accuracy_Sn2=accuracy_Sn
-accuracy_Sn2$modeltype<-"ensemble"
-
-accuracy_Sn3=rbind(accuracy_Sn,accuracy_Sn2)
-
-accuracy_Sn3$RStype <- factor(accuracy_Sn3$RStype , levels=c("lidar", "sentinel", "landc", "lidsent","lidall"))
-accuracy_Sn3$modeltype <- factor(accuracy_Sn3$modeltype , levels=c("glm","maxent","rf","ensemble"))
-
-c=ggplot(accuracy_GrW3, aes(x=RStype, y=AUC,fill=modeltype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0.2,1)+
-  xlab("Remote Sensing data")+ggtitle("a. Great reed wrabler")+
-  scale_x_discrete(labels=c("lidar"="LiDAR","sentinel"="Sentinel","landc"="Land cover","lidsent"="LiDAR+Sentinel","lidall"="All"))
-d=ggplot(accuracy_Sn3, aes(x=RStype, y=AUC,fill=modeltype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+
-  ylab("AUC")+xlab("Remote Sensing data")+ggtitle("b. Savi's wrabler")+ylim(0.2,1)+
-  scale_x_discrete(labels=c("lidar"="LiDAR","sentinel"="Sentinel","landc"="Land cover","lidsent"="LiDAR+Sentinel","lidall"="All"))
-
-p1=ggplot(accuracy_Sn3, aes(x=RStype, y=AUC,fill=modeltype)) + 
-  geom_boxplot()+theme_bw(base_size = 20)+ylab("AUC")+xlab("Remote Sensing products")+
-  ggtitle("b. Savi's wrabler")+guides(fill=guide_legend(title="SDM type"))
-
-get_legend<-function(myggplot){
-  tmp <- ggplot_gtable(ggplot_build(myggplot))
-  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
-  legend <- tmp$grobs[[leg]]
-  return(legend)
-}
-
-legend2 <- get_legend(p1)
-
-fig1b=grid.arrange(
-  c,d,legend2,
-  ncol=2,
-  nrow=2,
-  layout_matrix=rbind(c(1,3),c(2,3)),
-  widths = c(2,0.5),
-  heights = c(1,1)
-)
-
-ggsave("fig2v2.png",plot = fig1b,width = 14, height =10)
-
-# report accuracy table
-
-acc_grouped_GrW <- group_by(accuracy_GrW3, RStype,modeltype)
-acc_GrW_table<-summarise(acc_grouped_GrW, meanAUC=mean(AUC),sdAUC=sd(AUC), meanDev=mean(Deviance),sdDev=sd(Deviance),
-                         meanTSS=mean(TSS),sdTSS=sd(TSS),meanKappa=mean(Kappa),sdKappa=sd(Kappa))
-
-acc_grouped_Sn<- group_by(accuracy_Sn3, RStype,modeltype)
-acc_Sn_table<-summarise(acc_grouped_Sn, meanAUC=mean(AUC),sdAUC=sd(AUC), meanDev=mean(Deviance),sdDev=sd(Deviance),
-                         meanTSS=mean(TSS),sdTSS=sd(TSS),meanKappa=mean(Kappa),sdKappa=sd(Kappa))
 
 # response curves
 
@@ -178,10 +113,10 @@ a=ggplot(sel_fea1_GrW1,aes(x=optical_NDVIsd_hor_100m,y=meanresp))+geom_line(colo
   theme_bw(base_size = 16)+ylab("Probability")+xlab("optical_NDVIsd_hor_100m")+ylim(0,1)+ggtitle("c.")
 b=ggplot(sel_fea1_GrW2,aes(x=lidar_VD_2_3,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
-  theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_VD_2_3")+ylim(0,1)+ggtitle("d.")
+  theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_VD_2_3")+ylim(0,1)+ggtitle("e.")
 c=ggplot(sel_fea1_GrW3,aes(x=lidar_HH_reedveg_prop,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
-  theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)+ggtitle("e.")
+  theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)+ggtitle("d.")
 d=ggplot(sel_fea1_GrW4,aes(x=lidar_C_ppr,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
   theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_C_ppr")+ylim(0,1)+ggtitle("f.")
@@ -194,16 +129,16 @@ f=ggplot(sel_fea1_Sn1,aes(x=lidar_HH_reedveg_prop,y=meanresp))+geom_line(color="
   theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)+ggtitle("h.")
 g=ggplot(sel_fea1_Sn2,aes(x=lidar_HH_sd,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
-  theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_sd")+ylim(0,1)+ggtitle("i.")
+  theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_sd")+ylim(0,1)+ggtitle("k.")
 h=ggplot(sel_fea1_Sn3,aes(x=lidar_C_ppr,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
   theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_C_ppr")+ylim(0,1)+ggtitle("j.")
 j=ggplot(sel_fea1_Sn4,aes(x=landcover_propswamp,y=meanresp))+geom_line(color="deeppink",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="deeppink", alpha = .2)+
-  theme_bw(base_size = 16)+ylab("Probability")+xlab("landcover_propswamp")+ylim(0,1)+ggtitle("k.")
+  theme_bw(base_size = 16)+ylab("Probability")+xlab("landcover_propswamp")+ylim(0,1)+ggtitle("l.")
 k=ggplot(sel_fea1_Sn5,aes(x=lidar_VV_p25,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
-  theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_VV_p25")+ylim(0,1)+ggtitle("l.")
+  theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_VV_p25")+ylim(0,1)+ggtitle("i.")
 
 t1 <- textGrob("Savis's warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
 t3 <- textGrob("Great reed warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
@@ -223,8 +158,8 @@ get_legend<-function(myggplot){
 legend <- get_legend(p0)
 
 fig3b=grid.arrange(
-  a,b,c,d,e,
-  f,g,h,j,k,
+  a,c,b,d,e,
+  f,k,h,g,j,
   legend,
   ncol=5,
   nrow=3,
