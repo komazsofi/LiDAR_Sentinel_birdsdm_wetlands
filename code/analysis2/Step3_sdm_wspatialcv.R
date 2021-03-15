@@ -37,80 +37,25 @@ sb <- spatialBlock(speciesData = mydata_clean2,
                    biomod2Format = TRUE,
                    numLimit=50)
 
-#saveRDS(sb, file = "sb_Sn.rds")
-#saveRDS(sb, file = "sb_GrW.rds")
-
 folds <- sb$folds
 
-# with sdm package
-mydata_clean=presabs_sampl
-
-accuracy=data.frame(matrix(ncol = 6, nrow = 50))
-names(accuracy)<-c("modelID","AUC","Deviance","TSS","Kappa","RStype")
-
-feaimp=data.frame(matrix(ncol = 4, nrow = 17))
-names(feaimp)<-c("variables","AUCtest","lower","upper")
-
-
-for(k in seq_len(length(folds))){
-  trainSet <- unlist(folds[[k]][1]) # training set indices
-  testSet <- unlist(folds[[k]][2]) # testing set indices
-  
-  data_forsdm_lidar <- sdmData(formula=occurrence~., train=mydata_clean[trainSet, c(5:11,19)],test=mydata_clean[testSet, c(5:11,19)])
-  model_lidar <- sdm(occurrence~.,data=data_forsdm_lidar,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
-  
-  data_forsdm_sentinel <- sdmData(formula=occurrence~., train=mydata_clean[trainSet, c(12:18,19)],test=mydata_clean[testSet, c(12:18,19)])
-  model_sentinel <- sdm(occurrence~.,data=data_forsdm_sentinel,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
-  
-  data_forsdm_landc <- sdmData(formula=occurrence~., train=mydata_clean[trainSet, c(2:4,19)],test=mydata_clean[testSet, c(2:4,19)])
-  model_landc <- sdm(occurrence~.,data=data_forsdm_landc,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
-  
-  data_forsdm_lidsent <- sdmData(formula=occurrence~., train=mydata_clean[trainSet, c(5:18,19)],test=mydata_clean[testSet, c(5:18,19)])
-  model_lidsent <- sdm(occurrence~.,data=data_forsdm_lidsent,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
-  
-  data_forsdm_lidall <- sdmData(formula=occurrence~., train=mydata_clean[trainSet, c(2:18,19)],test=mydata_clean[testSet,c(2:18,19)])
-  model_lidall <- sdm(occurrence~.,data=data_forsdm_lidall,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
-  
-  model_lidar_acc=getEvaluation(model_lidar,stat=c('AUC','TSS','Deviance','Kappa'))
-  model_sentinel_acc=getEvaluation(model_sentinel,stat=c('AUC','TSS','Deviance','Kappa'))
-  model_landc_acc=getEvaluation(model_landc,stat=c('AUC','TSS','Deviance','Kappa'))
-  model_lidsent_acc=getEvaluation(model_lidsent,stat=c('AUC','TSS','Deviance','Kappa'))
-  model_lidall_acc=getEvaluation(model_lidall,stat=c('AUC','TSS','Deviance','Kappa'))
-  
-  model_lidar_acc$RStype<-"lidar"
-  model_sentinel_acc$RStype<-"sentinel"
-  model_landc_acc$RStype<-"landc"
-  model_lidsent_acc$RStype<-"lidsent"
-  model_lidall_acc$RStype<-"lidall"
-  
-  newline=rbind(model_lidar_acc,model_sentinel_acc,model_landc_acc,model_lidsent_acc,model_lidall_acc)
-  accuracy <- rbind(accuracy, newline)
-  
-  vi <- getVarImp(model_lidall, method=c('glm','maxent','rf'))
-  newline2=vi@varImportanceMean[["AUCtest"]]
-  feaimp=rbind(feaimp,newline2)
-  
-}
-
-accuracy=accuracy[complete.cases(accuracy), ]
-accuracy$modeltype<-"maxent"
-
-accuracy$modeltype[accuracy$modelID <21] <- "glm"
-accuracy$modeltype[accuracy$modelID >39] <- "rf"
-
-
-feaimp=feaimp[complete.cases(feaimp), ]
-
-#write.csv(accuracy,"GrW_acc_test.csv")
-#write.csv(feaimp,"GrW_feaimp_test.csv")
-
-write.csv(accuracy,"Sn_acc_test.csv")
-write.csv(feaimp,"Sn_feaimp_test.csv")
-
-# merge sdm objects
+# running sdm per every train-test block
+mydata_clean=presabs
 
 trainSet1 <- unlist(folds[[1]][1]) 
 testSet1 <- unlist(folds[[1]][2])
+
+data_forsdm_lidar1 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet1, c(5:11,19)],test=mydata_clean[testSet1, c(5:11,19)])
+model_lidar1 <- sdm(occurrence~.,data=data_forsdm_lidar1,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_sentinel1 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet1, c(12:18,19)],test=mydata_clean[testSet1, c(12:18,19)])
+model_sentinel1 <- sdm(occurrence~.,data=data_forsdm_sentinel1,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_landc1 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet1, c(2:4,19)],test=mydata_clean[testSet1, c(2:4,19)])
+model_landc1 <- sdm(occurrence~.,data=data_forsdm_landc1,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_lidsent1 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet1, c(5:18,19)],test=mydata_clean[testSet1, c(5:18,19)])
+model_lidsent1 <- sdm(occurrence~.,data=data_forsdm_lidsent1,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
 
 data_forsdm_lidall1 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet1, c(2:18,19)],test=mydata_clean[testSet1,c(2:18,19)])
 model_lidall1 <- sdm(occurrence~.,data=data_forsdm_lidall1,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
@@ -118,11 +63,35 @@ model_lidall1 <- sdm(occurrence~.,data=data_forsdm_lidall1,methods=c('glm','maxe
 trainSet2 <- unlist(folds[[2]][1]) 
 testSet2 <- unlist(folds[[2]][2])
 
+data_forsdm_lidar2 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet2, c(5:11,19)],test=mydata_clean[testSet2, c(5:11,19)])
+model_lidar2 <- sdm(occurrence~.,data=data_forsdm_lidar2,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_sentinel2 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet2, c(12:18,19)],test=mydata_clean[testSet2, c(12:18,19)])
+model_sentinel2 <- sdm(occurrence~.,data=data_forsdm_sentinel2,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_landc2 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet2, c(2:4,19)],test=mydata_clean[testSet2, c(2:4,19)])
+model_landc2 <- sdm(occurrence~.,data=data_forsdm_landc2,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_lidsent2 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet2, c(5:18,19)],test=mydata_clean[testSet2, c(5:18,19)])
+model_lidsent2 <- sdm(occurrence~.,data=data_forsdm_lidsent2,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
 data_forsdm_lidall2 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet2, c(2:18,19)],test=mydata_clean[testSet2,c(2:18,19)])
 model_lidall2 <- sdm(occurrence~.,data=data_forsdm_lidall2,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
 
 trainSet3 <- unlist(folds[[3]][1]) 
 testSet3 <- unlist(folds[[3]][2])
+
+data_forsdm_lidar3 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet3, c(5:11,19)],test=mydata_clean[testSet3, c(5:11,19)])
+model_lidar3 <- sdm(occurrence~.,data=data_forsdm_lidar3,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_sentinel3 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet3, c(12:18,19)],test=mydata_clean[testSet3, c(12:18,19)])
+model_sentinel3 <- sdm(occurrence~.,data=data_forsdm_sentinel3,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_landc3 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet3, c(2:4,19)],test=mydata_clean[testSet3, c(2:4,19)])
+model_landc3 <- sdm(occurrence~.,data=data_forsdm_landc3,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_lidsent3 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet3, c(5:18,19)],test=mydata_clean[testSet3, c(5:18,19)])
+model_lidsent3 <- sdm(occurrence~.,data=data_forsdm_lidsent3,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
 
 data_forsdm_lidall3 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet3, c(2:18,19)],test=mydata_clean[testSet3,c(2:18,19)])
 model_lidall3 <- sdm(occurrence~.,data=data_forsdm_lidall3,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
@@ -130,17 +99,48 @@ model_lidall3 <- sdm(occurrence~.,data=data_forsdm_lidall3,methods=c('glm','maxe
 trainSet4 <- unlist(folds[[4]][1]) 
 testSet4 <- unlist(folds[[4]][2])
 
+data_forsdm_lidar4 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet4, c(5:11,19)],test=mydata_clean[testSet4, c(5:11,19)])
+model_lidar4 <- sdm(occurrence~.,data=data_forsdm_lidar4,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_sentinel4 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet4, c(12:18,19)],test=mydata_clean[testSet4, c(12:18,19)])
+model_sentinel4 <- sdm(occurrence~.,data=data_forsdm_sentinel4,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_landc4 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet4, c(2:4,19)],test=mydata_clean[testSet4, c(2:4,19)])
+model_landc4 <- sdm(occurrence~.,data=data_forsdm_landc4,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_lidsent4 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet4, c(5:18,19)],test=mydata_clean[testSet4, c(5:18,19)])
+model_lidsent4 <- sdm(occurrence~.,data=data_forsdm_lidsent4,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
 data_forsdm_lidall4 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet4, c(2:18,19)],test=mydata_clean[testSet4,c(2:18,19)])
 model_lidall4 <- sdm(occurrence~.,data=data_forsdm_lidall4,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
 
 trainSet5 <- unlist(folds[[5]][1]) 
 testSet5 <- unlist(folds[[5]][2])
 
+data_forsdm_lidar5 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet5, c(5:11,19)],test=mydata_clean[testSet5, c(5:11,19)])
+model_lidar5 <- sdm(occurrence~.,data=data_forsdm_lidar5,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_sentinel5 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet5, c(12:18,19)],test=mydata_clean[testSet5, c(12:18,19)])
+model_sentinel5 <- sdm(occurrence~.,data=data_forsdm_sentinel5,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_landc5 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet5, c(2:4,19)],test=mydata_clean[testSet5, c(2:4,19)])
+model_landc5 <- sdm(occurrence~.,data=data_forsdm_landc5,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
+data_forsdm_lidsent5 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet5, c(5:18,19)],test=mydata_clean[testSet5, c(5:18,19)])
+model_lidsent5 <- sdm(occurrence~.,data=data_forsdm_lidsent5,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+
 data_forsdm_lidall5 <- sdmData(formula=occurrence~., train=mydata_clean[trainSet5, c(2:18,19)],test=mydata_clean[testSet5,c(2:18,19)])
 model_lidall5 <- sdm(occurrence~.,data=data_forsdm_lidall5,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
 
-#m_merged_GrW=model_lidall1+model_lidall2+model_lidall3+model_lidall4+model_lidall5
-m_merged_Sn=model_lidall1+model_lidall2+model_lidall3+model_lidall4+model_lidall5
+m_merged_lidar=model_lidar1+model_lidar2+model_lidar3+model_lidar4+model_lidar5
+m_merged_sentinel=model_sentinel1+model_sentinel2+model_sentinel3+model_sentinel4+model_sentinel5
+m_merged_landc=model_landc1+model_landc2+model_landc3+model_landc4+model_landc5
+m_merged_lidsent=model_lidsent1+model_lidsent2+model_lidsent3+model_lidsent4+model_lidsent5
+m_merged_all=model_lidall1+model_lidall2+model_lidall3+model_lidall4+model_lidall5
 
-#write.sdm(m_merged_GrW,"m_merged_GrW",overwrite = TRUE)
-write.sdm(m_merged_Sn,"m_merged_Sn",overwrite = TRUE)
+# Export
+write.sdm(m_merged_lidar,"merged_GrW_lidar",overwrite = TRUE)
+write.sdm(m_merged_sentinel,"merged_GrW_sentinel",overwrite = TRUE)
+write.sdm(m_merged_landc,"merged_GrW_landc",overwrite = TRUE)
+write.sdm(m_merged_lidsent,"merged_GrW_lidsent",overwrite = TRUE)
+write.sdm(m_merged_all,"merged_GrW_all",overwrite = TRUE)
