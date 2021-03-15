@@ -5,7 +5,7 @@ library(gridExtra)
 library(grid)
 library(sdm)
 
-workingdirectory="D:/Sync/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both/"
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both/"
 setwd(workingdirectory)
 
 # Import
@@ -108,7 +108,7 @@ Sn_all_acc$modeltype[c(41:60,101:120,161:180,221:240,281:300)]<-"rf"
 
 Sn_merged=rbind(Sn_lid_acc,Sn_sent_acc,Sn_landc_acc,Sn_lidsent_acc,Sn_all_acc)
 
-Sn_merged2=GrW_merged
+Sn_merged2=Sn_merged
 Sn_merged2$modeltype<-"ensemble"
 
 accuracy_Sn3=rbind(Sn_merged,Sn_merged2)
@@ -124,7 +124,7 @@ c=ggplot(accuracy_GrW3, aes(x=RStype, y=AUC,fill=modeltype)) +
   scale_x_discrete(labels=c("lidar"="LiDAR","sentinel"="Sentinel","landc"="Land cover","lidsent"="LiDAR+Sentinel","lidall"="All"))
 d=ggplot(accuracy_Sn3, aes(x=RStype, y=AUC,fill=modeltype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+
-  ylab("AUC")+xlab("Remote Sensing data")+ggtitle("b. Savi's wrabler")+ylim(0.2,1)+
+  ylab("AUC")+xlab("Remote Sensing data")+ggtitle("b. Savi's warbler")+ylim(0.2,1)+
   scale_x_discrete(labels=c("lidar"="LiDAR","sentinel"="Sentinel","landc"="Land cover","lidsent"="LiDAR+Sentinel","lidall"="All"))
 
 p1=ggplot(accuracy_Sn3, aes(x=RStype, y=AUC,fill=modeltype)) + 
@@ -151,3 +151,12 @@ fig1b=grid.arrange(
 
 ggsave("fig2v2.png",plot = fig1b,width = 14, height =10)
 
+# report accuracy table
+
+acc_grouped_GrW <- group_by(accuracy_GrW3, RStype,modeltype)
+acc_GrW_table<-summarise(acc_grouped_GrW, meanAUC=mean(AUC),sdAUC=sd(AUC), meanDev=mean(Deviance),sdDev=sd(Deviance),
+                         meanTSS=mean(TSS),sdTSS=sd(TSS),meanKappa=mean(Kappa),sdKappa=sd(Kappa))
+
+acc_grouped_Sn<- group_by(accuracy_Sn3, RStype,modeltype)
+acc_Sn_table<-summarise(acc_grouped_Sn, meanAUC=mean(AUC),sdAUC=sd(AUC), meanDev=mean(Deviance),sdDev=sd(Deviance),
+                        meanTSS=mean(TSS),sdTSS=sd(TSS),meanKappa=mean(Kappa),sdKappa=sd(Kappa))
