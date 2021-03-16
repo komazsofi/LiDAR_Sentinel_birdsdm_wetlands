@@ -160,3 +160,6 @@ acc_GrW_table<-summarise(acc_grouped_GrW, meanAUC=mean(AUC),sdAUC=sd(AUC), meanD
 acc_grouped_Sn<- group_by(accuracy_Sn3, RStype,modeltype)
 acc_Sn_table<-summarise(acc_grouped_Sn, meanAUC=mean(AUC),sdAUC=sd(AUC), meanDev=mean(Deviance),sdDev=sd(Deviance),
                         meanTSS=mean(TSS),sdTSS=sd(TSS),meanKappa=mean(Kappa),sdKappa=sd(Kappa))
+
+write.csv(acc_GrW_table,"acc_GrW_table.csv")
+write.csv(acc_Sn_table,"acc_Sn_table.csv")
