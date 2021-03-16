@@ -1,0 +1,28 @@
+library(ggplot2)
+library(gridExtra)
+library(grid)
+library(GGally)
+
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both/"
+setwd(workingdirectory)
+
+# Import
+
+presabs_GrW=read.csv("presabs_Sn2.csv")
+presabs_Sn=read.csv("presabs_GrW2.csv")
+
+presabs_GrW=presabs_GrW[,-1]
+presabs_Sn=presabs_Sn[,-1]
+
+# corrplot
+
+a=ggcorr(presabs_GrW[,c(2:18)], c("pairwise", "spearman"), name = expression(italic("Spearman's r")), label=TRUE, label_alpha=TRUE, label_size=5, hjust=1, size=5, layout.exp=6)+ggtitle("a. Great reed warbler")
+b=ggcorr(presabs_Sn[,c(2:18)], c("pairwise", "spearman"), name = expression(italic("Spearman's r")), label=TRUE, label_alpha=TRUE, label_size=5, hjust=1, size=5, layout.exp=6)+ggtitle("b. Savi's warbler")
+
+fig=grid.arrange(
+  a,b,
+  ncol=1,
+  nrow=2
+)
+
+ggsave("figcorr.png",plot = fig,width = 18, height =18)
