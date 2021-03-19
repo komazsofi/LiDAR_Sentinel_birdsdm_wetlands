@@ -16,8 +16,8 @@ presabs_Sn=presabs_Sn[,-1]
 
 # corrplot
 
-a=ggcorr(presabs_GrW[,c(2:18)], c("pairwise", "spearman"), name = expression(italic("Spearman's r")), label=TRUE, label_alpha=TRUE, label_size=5, hjust=1, size=5, layout.exp=6)+ggtitle("a. Great reed warbler")
-b=ggcorr(presabs_Sn[,c(2:18)], c("pairwise", "spearman"), name = expression(italic("Spearman's r")), label=TRUE, label_alpha=TRUE, label_size=5, hjust=1, size=5, layout.exp=6)+ggtitle("b. Savi's warbler")
+a=ggcorr(presabs_GrW[,c(2:18)], c("pairwise", "spearman"), name = expression(italic("Spearman's r")), label=TRUE, label_alpha=TRUE, label_size=4, hjust=1, size=4, layout.exp=6)+ggtitle("a. Great reed warbler")
+b=ggcorr(presabs_Sn[,c(2:18)], c("pairwise", "spearman"), name = expression(italic("Spearman's r")), label=TRUE, label_alpha=TRUE, label_size=4, hjust=1, size=4, layout.exp=6)+ggtitle("b. Savi's warbler")
 
 fig=grid.arrange(
   a,b,
@@ -25,4 +25,4 @@ fig=grid.arrange(
   nrow=2
 )
 
-ggsave("figcorr.png",plot = fig,width = 18, height =18)
+ggsave("figcorr.png",plot = fig,width = 12, height =12)
