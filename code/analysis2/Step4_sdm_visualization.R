@@ -10,7 +10,6 @@ setwd(workingdirectory)
 
 # Import
 m_merged_GrW=read.sdm("merged_GrW_all.sdm")
-
 m_merged_Sn=read.sdm("merged_Sn_all.sdm")
 
 # Feature importance
@@ -20,31 +19,31 @@ feaimp_GrW_dfvis=vi@varImportanceMean[["AUCtest"]]
 
 feaimp_GrW_dfvis$color<-0
 feaimp_GrW_dfvis$color[1:3]<-3
-feaimp_GrW_dfvis$color[4:10]<-2
-feaimp_GrW_dfvis$color[11:17]<-1
+feaimp_GrW_dfvis$color[4:10]<-1
+feaimp_GrW_dfvis$color[11:17]<-2
 
 vi2 <- getVarImp(m_merged_Sn, method=c('glm','maxent','rf'))
 feaimp_Sn_dfvis=vi2@varImportanceMean[["AUCtest"]]
 
 feaimp_Sn_dfvis$color<-0
 feaimp_Sn_dfvis$color[1:3]<-3
-feaimp_Sn_dfvis$color[4:10]<-2
-feaimp_Sn_dfvis$color[11:17]<-1
+feaimp_Sn_dfvis$color[4:10]<-1
+feaimp_Sn_dfvis$color[11:17]<-2
 
-a1=ggplot(feaimp_GrW_dfvis, aes(x=variables, y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
+a1=ggplot(feaimp_GrW_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(-0.01, 0.4)+
-  scale_fill_manual(values = c("1" = "goldenrod4", "2" = "orange", "3" = "deeppink"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ggtitle("a. Great reed warbler")
+  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(-0.01, 0.3)+
+  scale_fill_manual(values = c("1" = "orange", "2" = "goldenrod4", "3" = "deeppink"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover"))+ggtitle("a. Great reed warbler")
 
-b1=ggplot(feaimp_Sn_dfvis, aes(x=variables, y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
+b1=ggplot(feaimp_Sn_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(0, 0.4)+
-  scale_fill_manual(values = c("1" = "goldenrod4", "2" = "orange", "3" = "deeppink"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ggtitle("b. Savi's warbler")
+  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(0, 0.3)+
+  scale_fill_manual(values = c("1" = "orange", "2" = "goldenrod4", "3" = "deeppink"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover"))+ggtitle("b. Savi's warbler")
 
-p0=ggplot(feaimp_Sn_dfvis, aes(x=variables, y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = TRUE)+
+p0=ggplot(feaimp_Sn_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = TRUE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
   coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+
-  scale_fill_manual(values = c("1" = "goldenrod4", "2" = "orange", "3" = "deeppink"),name="Metrics type",labels=c("Sentinel","LiDAR","Landcover"))+ggtitle("b. Savi's warbler")
+  scale_fill_manual(values = c("1" = "orange", "2" = "goldenrod4", "3" = "deeppink"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover"))+ggtitle("a. Great reed warbler")
 
 get_legend<-function(myggplot){
   tmp <- ggplot_gtable(ggplot_build(myggplot))
@@ -161,10 +160,10 @@ fig3b=grid.arrange(
   a,c,b,d,e,
   f,k,h,g,j,
   legend,
-  ncol=5,
+  ncol=6,
   nrow=3,
-  layout_matrix=rbind(c(1,2,3,4,5),c(6,7,8,9,10), c(11,11,11,11,11)),
-  widths = c(0.2,0.2,0.2,0.2,0.2),
+  layout_matrix=rbind(c(NA,1,2,3,4,5),c(NA,6,7,8,9,10), c(NA,11,11,11,11,11)),
+  widths = c(0.1,0.2,0.2,0.2,0.2,0.2),
   heights = c(1,1,0.3)
 )
 
@@ -174,4 +173,4 @@ fig3=grid.arrange(
   nrow=2
 )
 
-ggsave("fig3v2.png",plot = fig3,width = 16, height =16)
+ggsave("fig3v2.png",plot = fig3,width = 18, height =16)

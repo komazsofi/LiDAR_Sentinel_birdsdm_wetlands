@@ -118,18 +118,19 @@ accuracy_Sn3$modeltype <- factor(accuracy_Sn3$modeltype , levels=c("glm","maxent
 
 # visualization
 
-c=ggplot(accuracy_GrW3, aes(x=RStype, y=AUC,fill=modeltype)) + 
+c=ggplot(accuracy_GrW3, aes(x=modeltype, y=AUC,fill=RStype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0.2,1)+
-  xlab("Remote Sensing data")+ggtitle("a. Great reed warbler")+
-  scale_x_discrete(labels=c("lidar"="LiDAR","sentinel"="Sentinel","landc"="Land cover","lidsent"="LiDAR+Sentinel","lidall"="All"))
-d=ggplot(accuracy_Sn3, aes(x=RStype, y=AUC,fill=modeltype)) + 
+  xlab("SDM")+ggtitle("a. Great reed warbler")+
+  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink", "lidsent"="chocolate", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
+d=ggplot(accuracy_Sn3, aes(x=modeltype, y=AUC,fill=RStype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+
-  ylab("AUC")+xlab("Remote Sensing data")+ggtitle("b. Savi's warbler")+ylim(0.2,1)+
-  scale_x_discrete(labels=c("lidar"="LiDAR","sentinel"="Sentinel","landc"="Land cover","lidsent"="LiDAR+Sentinel","lidall"="All"))
+  ylab("AUC")+xlab("SDM")+ggtitle("b. Savi's warbler")+ylim(0.2,1)+
+  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink", "lidsent"="chocolate", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
 
-p1=ggplot(accuracy_Sn3, aes(x=RStype, y=AUC,fill=modeltype)) + 
-  geom_boxplot()+theme_bw(base_size = 20)+ylab("AUC")+xlab("Remote Sensing products")+
-  ggtitle("b. Savi's wrabler")+guides(fill=guide_legend(title="SDM type"))
+p1=ggplot(accuracy_GrW3, aes(x=modeltype, y=AUC,fill=RStype)) + 
+  geom_boxplot(show.legend = TRUE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0.2,1)+
+  xlab("SDM")+ggtitle("a. Great reed warbler")+
+  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink", "lidsent"="chocolate", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
 
 get_legend<-function(myggplot){
   tmp <- ggplot_gtable(ggplot_build(myggplot))
@@ -145,11 +146,56 @@ fig1b=grid.arrange(
   ncol=2,
   nrow=2,
   layout_matrix=rbind(c(1,3),c(2,3)),
-  widths = c(2,0.5),
+  widths = c(1,0.5),
   heights = c(1,1)
 )
 
-ggsave("fig2v2.png",plot = fig1b,width = 14, height =10)
+ggsave("fig2v2.png",plot = fig1b,width = 10, height =10)
+
+c2=ggplot(accuracy_GrW3, aes(x=modeltype, y=TSS,fill=RStype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("TSS")+ylim(0,1)+
+  xlab("SDM")+ggtitle("c. Great reed warbler")+
+  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink", "lidsent"="chocolate", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
+d2=ggplot(accuracy_Sn3, aes(x=modeltype, y=TSS,fill=RStype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+
+  ylab("TSS")+xlab("SDM")+ggtitle("d. Savi's warbler")+ylim(0,1)+
+  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink", "lidsent"="chocolate", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
+
+p2=ggplot(accuracy_GrW3, aes(x=modeltype, y=TSS,fill=RStype)) + 
+  geom_boxplot(show.legend = TRUE)+theme_bw(base_size = 20)+ylab("TSS")+ylim(0,1)+
+  xlab("SDM")+ggtitle("a. Great reed warbler")+
+  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink", "lidsent"="chocolate", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
+
+get_legend<-function(myggplot){
+  tmp <- ggplot_gtable(ggplot_build(myggplot))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  legend <- tmp$grobs[[leg]]
+  return(legend)
+}
+
+legend3 <- get_legend(p2)
+
+fig1c=grid.arrange(
+  c2,d2,legend3,
+  ncol=2,
+  nrow=2,
+  layout_matrix=rbind(c(1,3),c(2,3)),
+  widths = c(1,0.5),
+  heights = c(1,1)
+)
+
+ggsave("fig2tss.png",plot = fig1c,width = 10, height =10)
+
+fig1d=grid.arrange(
+  c,d,c2,d2,legend3,
+  ncol=3,
+  nrow=2,
+  layout_matrix=rbind(c(1,2,5),c(3,4,5)),
+  widths = c(1,1,0.5),
+  heights = c(1,1)
+)
+
+ggsave("fig2_comb.png",plot = fig1d,width = 16, height =10)
 
 # report accuracy table
 
