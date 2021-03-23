@@ -125,8 +125,8 @@ s1_VV_melted_m_med_GrW$class<-"GrW"
 s1_VV_melted_m_med_SW$class<-"SW"
 s1_VV_melted_m_med_Bgr$class<-"Bgr"
 
-merged_db=rbind(s1_VV_melted_m_med_GrW,s1_VV_melted_m_med_SW,s1_VV_melted_m_med_Bgr)
+merged_db=rbind(s1_VV_melted_m_med_GrW,s1_VV_melted_m_med_Bgr)
 
 ggplot(merged_db, aes(x = month, y = med_VV_month,colour=class))+geom_point()+geom_line(size=3)+
-  theme_bw(base_size = 20)+xlab("Months in a year")+ylab("Backscatter coefficient VV [dB]")+scale_x_discrete(limits=month.abb)+
-  scale_colour_manual(values = c("GrW" = "brown", "SW" = "brown3", "Bgr" = "black"),name="Observation",labels=c("Abs.","Pres. GrW","Pres. SW"))
+  theme_bw(base_size = 25)+xlab("Months in a year")+ylab("Backscatter coefficient VV [dB]")+scale_x_discrete(limits=month.abb)+
+  scale_colour_manual(values = c("GrW" = "brown","Bgr" = "black"),name="Observation",labels=c("Absence","Presence"))
