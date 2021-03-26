@@ -53,7 +53,7 @@ GrW_all_acc$modeltype[c(1:20,61:80,121:140,181:200,241:260)]<-"glm"
 GrW_all_acc$modeltype[c(21:40,81:100,141:160,201:220,261:280)]<-"maxent"
 GrW_all_acc$modeltype[c(41:60,101:120,161:180,221:240,281:300)]<-"rf"
 
-GrW_merged=rbind(GrW_lid_acc,GrW_sent_acc,GrW_landc_acc,GrW_lidsent_acc,GrW_all_acc)
+GrW_merged=rbind(GrW_lid_acc,GrW_sent_acc,GrW_landc_acc,GrW_all_acc)
 
 GrW_merged2=GrW_merged
 GrW_merged2$modeltype<-"ensemble"
@@ -106,14 +106,14 @@ Sn_all_acc$modeltype[c(1:20,61:80,121:140,181:200,241:260)]<-"glm"
 Sn_all_acc$modeltype[c(21:40,81:100,141:160,201:220,261:280)]<-"maxent"
 Sn_all_acc$modeltype[c(41:60,101:120,161:180,221:240,281:300)]<-"rf"
 
-Sn_merged=rbind(Sn_lid_acc,Sn_sent_acc,Sn_landc_acc,Sn_lidsent_acc,Sn_all_acc)
+Sn_merged=rbind(Sn_lid_acc,Sn_sent_acc,Sn_landc_acc,Sn_all_acc)
 
 Sn_merged2=Sn_merged
 Sn_merged2$modeltype<-"ensemble"
 
 accuracy_Sn3=rbind(Sn_merged,Sn_merged2)
 
-accuracy_Sn3$RStype <- factor(accuracy_Sn3$RStype , levels=c("lidar", "sentinel", "landc", "lidsent","lidall"))
+accuracy_Sn3$RStype <- factor(accuracy_Sn3$RStype , levels=c("lidar", "sentinel", "landc", "lidall"))
 accuracy_Sn3$modeltype <- factor(accuracy_Sn3$modeltype , levels=c("glm","maxent","rf","ensemble"))
 
 # visualization
@@ -121,16 +121,16 @@ accuracy_Sn3$modeltype <- factor(accuracy_Sn3$modeltype , levels=c("glm","maxent
 c=ggplot(accuracy_GrW3, aes(x=modeltype, y=AUC,fill=RStype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0.2,1)+
   xlab("SDM")+ggtitle("a. Great reed warbler")+
-  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink", "lidsent"="chocolate", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
+  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","All"))
 d=ggplot(accuracy_Sn3, aes(x=modeltype, y=AUC,fill=RStype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+
   ylab("AUC")+xlab("SDM")+ggtitle("b. Savi's warbler")+ylim(0.2,1)+
-  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink", "lidsent"="chocolate", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
+  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink",  "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","All"))
 
 p1=ggplot(accuracy_GrW3, aes(x=modeltype, y=AUC,fill=RStype)) + 
   geom_boxplot(show.legend = TRUE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0.2,1)+
   xlab("SDM")+ggtitle("a. Great reed warbler")+
-  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink", "lidsent"="chocolate", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
+  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink",  "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","All"))
 
 get_legend<-function(myggplot){
   tmp <- ggplot_gtable(ggplot_build(myggplot))
@@ -150,7 +150,7 @@ fig1b=grid.arrange(
   heights = c(1,1)
 )
 
-ggsave("fig2v2.png",plot = fig1b,width = 10, height =10)
+ggsave("fig2v3.png",plot = fig1b,width = 10, height =10)
 
 c2=ggplot(accuracy_GrW3, aes(x=modeltype, y=TSS,fill=RStype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("TSS")+ylim(0,1)+
@@ -209,3 +209,36 @@ acc_Sn_table<-summarise(acc_grouped_Sn, meanAUC=mean(AUC),sdAUC=sd(AUC), meanDev
 
 write.csv(acc_GrW_table,"acc_GrW_table.csv")
 write.csv(acc_Sn_table,"acc_Sn_table.csv")
+
+# ROC curve
+png("GrW_lid.png", width = 6, height = 5, units = 'in',res=300)
+roc(GrW_lid)
+dev.off()
+
+png("GrW_sent.png", width = 6, height = 5, units = 'in',res=300)
+roc(GrW_sent)
+dev.off()
+
+png("GrW_landc.png", width = 6, height = 5, units = 'in',res=300)
+roc(GrW_landc)
+dev.off()
+
+png("GrW_all.png", width = 6, height = 5, units = 'in',res=300)
+roc(GrW_all)
+dev.off()
+
+png("Sn_lid.png", width = 6, height = 5, units = 'in',res=300)
+roc(Sn_lid)
+dev.off()
+
+png("Sn_sent.png", width = 6, height = 5, units = 'in',res=300)
+roc(Sn_sent)
+dev.off()
+
+png("Sn_landc.png", width = 6, height = 5, units = 'in',res=300)
+roc(Sn_landc)
+dev.off()
+
+png("Sn_all.png", width = 6, height = 5, units = 'in',res=300)
+roc(Sn_all)
+dev.off()
