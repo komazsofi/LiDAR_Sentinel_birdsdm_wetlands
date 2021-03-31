@@ -3,6 +3,11 @@ library(gridExtra)
 library(grid)
 library(GGally)
 
+library(correlation)
+library(see) 
+library(ggraph) 
+
+
 workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both/"
 setwd(workingdirectory)
 
@@ -26,3 +31,9 @@ fig=grid.arrange(
 )
 
 ggsave("figcorr.png",plot = fig,width = 12, height =12)
+
+# GGM
+
+presabs_GrW[,c(2:18)] %>% 
+  correlation(partial = TRUE) %>% 
+  plot()
