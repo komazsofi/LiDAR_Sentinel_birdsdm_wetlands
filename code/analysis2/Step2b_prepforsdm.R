@@ -36,10 +36,13 @@ mydata_Sn_clean <- mydata_Sn_clean[,-1]
 table(mydata_GrW_clean$occurrence)
 table(mydata_Sn_clean$occurrence)
 
+write.csv(mydata_GrW_clean,"presabs_GrW_apr.csv")
+write.csv(mydata_Sn_clean,"presabs_Sn_apr.csv")
+
 # handle imbalanced GrW
-mydata_GrW_clean_sampl <- ovun.sample(occurrence ~ ., data = mydata_GrW_clean, method = "both", p=0.5, seed = 1)$data
-table(mydata_GrW_clean_sampl$occurrence)
+#mydata_GrW_clean_sampl <- ovun.sample(occurrence ~ ., data = mydata_GrW_clean, method = "both", p=0.5, seed = 1)$data
+#table(mydata_GrW_clean_sampl$occurrence)
 
 # export
-write.csv(mydata_GrW_clean_sampl,"presabs_GrW2.csv")
-write.csv(mydata_Sn_clean,"presabs_Sn2.csv")
+#write.csv(mydata_GrW_clean_sampl,"presabs_GrW2.csv")
+#write.csv(mydata_Sn_clean,"presabs_Sn2.csv")
