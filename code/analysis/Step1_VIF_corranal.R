@@ -19,12 +19,15 @@ all_predictor=stack(filelist)
 
 proj4string(all_predictor) <- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
 
-landcover=subset(all_predictor, c(1,2,3,4), drop=FALSE)
-lidar=subset(all_predictor, c(5:15), drop=FALSE)
-optical=subset(all_predictor, c(16:20), drop=FALSE)
-radar=subset(all_predictor, c(21:30), drop=FALSE)
+landcover=subset(all_predictor, c(1:6), drop=FALSE)
+lidar=subset(all_predictor, c(7:18), drop=FALSE)
+optical=subset(all_predictor, c(19:28), drop=FALSE)
+radar=subset(all_predictor, c(29:42), drop=FALSE)
 
 # VIF
+
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April/"
+setwd(workingdirectory)
 
 vif_lidar=vifstep(lidar,th=3)
 vif_optical=vifstep(optical,th=3)
