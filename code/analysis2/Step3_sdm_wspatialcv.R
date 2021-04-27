@@ -18,8 +18,8 @@ setwd(workingdirectory)
 filelist=list.files(pattern = "*.tif")
 all_predictor=stack(filelist)
 
-#presabs=read.csv("presabs_Sn_apr.csv")
-presabs=read.csv("presabs_GrW_apr.csv")
+presabs=read.csv("presabs_Sn_apr.csv")
+#presabs=read.csv("presabs_GrW_apr.csv")
 presabs=presabs[,-1]
 
 mydata_clean2=presabs
@@ -155,7 +155,7 @@ data_forsdm_lidar5 <- sdmData(formula=occurrence~., train=train5_sampl[, c(7:15,
 model_lidar5 <- sdm(occurrence~.,data=data_forsdm_lidar5,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
 
 data_forsdm_sentinel5 <- sdmData(formula=occurrence~., train=train5_sampl[, c(16:22,23)],test=test5_sampl[, c(16:22,23)])
-model_sentinel1 <- sdm(occurrence~.,data=data_forsdm_sentinel1,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
+model_sentinel5 <- sdm(occurrence~.,data=data_forsdm_sentinel5,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
 
 data_forsdm_landc5 <- sdmData(formula=occurrence~., train=train5_sampl[, c(1:6,23)],test=test5_sampl[, c(1:6,23)])
 model_landc5 <- sdm(occurrence~.,data=data_forsdm_landc5,methods=c('glm','maxent','rf'),replication=c('boot'),n=20)
