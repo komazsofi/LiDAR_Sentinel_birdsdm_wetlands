@@ -5,7 +5,7 @@ library(gridExtra)
 library(grid)
 library(sdm)
 
-workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both/"
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April/"
 setwd(workingdirectory)
 
 # Import
