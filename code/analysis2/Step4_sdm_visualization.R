@@ -5,7 +5,7 @@ library(gridExtra)
 library(grid)
 library(sdm)
 
-workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April/"
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April_results/"
 setwd(workingdirectory)
 
 # Import
@@ -14,15 +14,17 @@ m_merged_Sn=read.sdm("merged_Sn_all.sdm")
 
 # Feature importance
 
-vi <- getVarImp(m_merged_GrW, method=c('glm','maxent','rf'))
+#vi <- getVarImp(m_merged_GrW, method=c('glm','maxent','rf'))
+vi <- getVarImp(m_merged_GrW, method=c('rf'))
 feaimp_GrW_dfvis=vi@varImportanceMean[["AUCtest"]]
 
 feaimp_GrW_dfvis$color<-0
 feaimp_GrW_dfvis$color[1:6]<-3
 feaimp_GrW_dfvis$color[7:15]<-1
-feaimp_GrW_dfvis$color[16:22]<-2
+feaimp_GrW_dfvis$color[16:23]<-2
 
-vi2 <- getVarImp(m_merged_Sn, method=c('glm','maxent','rf'))
+#vi2 <- getVarImp(m_merged_Sn, method=c('glm','maxent','rf'))
+vi2 <- getVarImp(m_merged_Sn, method=c('rf'))
 feaimp_Sn_dfvis=vi2@varImportanceMean[["AUCtest"]]
 
 feaimp_Sn_dfvis$color<-0

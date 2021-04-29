@@ -22,7 +22,7 @@ proj4string(all_predictor) <- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=
 landcover=subset(all_predictor, c(1:6), drop=FALSE)
 lidar=subset(all_predictor, c(7:18), drop=FALSE)
 optical=subset(all_predictor, c(19:28), drop=FALSE)
-radar=subset(all_predictor, c(29:42), drop=FALSE)
+radar=subset(all_predictor, c(29:40), drop=FALSE)
 
 # VIF
 
@@ -33,6 +33,8 @@ vif_lidar=vifstep(lidar,th=3)
 vif_optical=vifstep(optical,th=3)
 vif_radar=vifstep(radar,th=3)
 vif_landcover=vifstep(landcover,th=3)
+
+setwd("D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April_results/")
 
 saveRDS(vif_lidar,file="vif_lidar.rds")
 saveRDS(vif_optical,file="vif_optical.rds")
