@@ -20,8 +20,8 @@ setwd(workingdirectory)
 filelist=list.files(pattern = "*.tif")
 all_predictor=stack(filelist)
 
-#presabs=read.csv("presabs_Sn_apr.csv")
-presabs=read.csv("presabs_GrW_apr.csv")
+presabs=read.csv("presabs_Sn_apr.csv")
+#presabs=read.csv("presabs_GrW_apr.csv")
 presabs=presabs[,-1]
 
 mydata_clean2=presabs
@@ -31,8 +31,8 @@ proj4string(mydata_clean2)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5
 
 # spatial thinning
 
-#sub.presabs <- subsample.distance(mydata_clean2, size = 2696, d = 20, replacement=FALSE,latlong=FALSE)
-sub.presabs <- subsample.distance(mydata_clean2, size = 1420, d = 20, replacement=FALSE,latlong=FALSE)
+sub.presabs <- subsample.distance(mydata_clean2, size = 2696, d = 20, replacement=FALSE,latlong=FALSE)
+#sub.presabs <- subsample.distance(mydata_clean2, size = 1420, d = 20, replacement=FALSE,latlong=FALSE)
 
 table(sub.presabs$occurrence)
 # optimal blocksize
