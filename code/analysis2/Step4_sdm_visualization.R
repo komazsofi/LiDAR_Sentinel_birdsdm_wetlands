@@ -30,7 +30,7 @@ feaimp_Sn_dfvis=vi2@varImportanceMean[["AUCtest"]]
 feaimp_Sn_dfvis$color<-0
 feaimp_Sn_dfvis$color[1:6]<-3
 feaimp_Sn_dfvis$color[7:15]<-1
-feaimp_Sn_dfvis$color[16:22]<-2
+feaimp_Sn_dfvis$color[16:23]<-2
 
 a1=ggplot(feaimp_GrW_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+

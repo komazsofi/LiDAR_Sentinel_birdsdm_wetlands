@@ -10,6 +10,8 @@ library(usdm)
 
 library(ROSE)
 
+library(spatialEco)
+
 workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April/"
 setwd(workingdirectory)
 
@@ -18,8 +20,8 @@ setwd(workingdirectory)
 filelist=list.files(pattern = "*.tif")
 all_predictor=stack(filelist)
 
-presabs=read.csv("presabs_Sn_apr.csv")
-#presabs=read.csv("presabs_GrW_apr.csv")
+#presabs=read.csv("presabs_Sn_apr.csv")
+presabs=read.csv("presabs_GrW_apr.csv")
 presabs=presabs[,-1]
 
 mydata_clean2=presabs
@@ -27,6 +29,12 @@ mydata_clean2=presabs
 coordinates(mydata_clean2)=~x+y
 proj4string(mydata_clean2)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs")
 
+# spatial thinning
+
+#sub.presabs <- subsample.distance(mydata_clean2, size = 2696, d = 20, replacement=FALSE,latlong=FALSE)
+sub.presabs <- subsample.distance(mydata_clean2, size = 1420, d = 20, replacement=FALSE,latlong=FALSE)
+
+table(sub.presabs$occurrence)
 # optimal blocksize
 
 sac <- spatialAutoRange(rasterLayer = all_predictor,
@@ -36,7 +44,7 @@ sac <- spatialAutoRange(rasterLayer = all_predictor,
 
 # Spatial blocking rub sb until do not have 0 in test
 
-sb <- spatialBlock(speciesData = mydata_clean2,
+sb <- spatialBlock(speciesData = sub.presabs,
                    species = "occurrence",
                    rasterLayer = all_predictor,
                    theRange = 6373, # size of the blocks
@@ -49,7 +57,7 @@ sb <- spatialBlock(speciesData = mydata_clean2,
 folds <- sb$folds
 
 # running sdm per every train-test block
-mydata_clean=presabs
+mydata_clean= as(sub.presabs, "data.frame")
 
 trainSet1 <- unlist(folds[[1]][1]) 
 testSet1 <- unlist(folds[[1]][2])
@@ -176,14 +184,14 @@ m_merged_all=model_lidall1+model_lidall2+model_lidall3+model_lidall4+model_lidal
 
 setwd("D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April_results/")
 
-write.sdm(m_merged_lidar,"merged_Sn_lidar",overwrite = TRUE)
-write.sdm(m_merged_sentinel,"merged_Sn_sentinel",overwrite = TRUE)
-write.sdm(m_merged_landc,"merged_Sn_landc",overwrite = TRUE)
-write.sdm(m_merged_lidsent,"merged_Sn_lidsent",overwrite = TRUE)
-write.sdm(m_merged_all,"merged_Sn_all",overwrite = TRUE)
+#write.sdm(m_merged_lidar,"merged_Sn_lidar",overwrite = TRUE)
+#write.sdm(m_merged_sentinel,"merged_Sn_sentinel",overwrite = TRUE)
+#write.sdm(m_merged_landc,"merged_Sn_landc",overwrite = TRUE)
+#write.sdm(m_merged_lidsent,"merged_Sn_lidsent",overwrite = TRUE)
+#write.sdm(m_merged_all,"merged_Sn_all",overwrite = TRUE)
 
-#write.sdm(m_merged_lidar,"merged_GrW_lidar",overwrite = TRUE)
-#write.sdm(m_merged_sentinel,"merged_GrW_sentinel",overwrite = TRUE)
-#write.sdm(m_merged_landc,"merged_GrW_landc",overwrite = TRUE)
-#write.sdm(m_merged_lidsent,"merged_Grw_lidsent",overwrite = TRUE)
-#write.sdm(m_merged_all,"merged_GrW_all",overwrite = TRUE)
+write.sdm(m_merged_lidar,"merged_GrW_lidar",overwrite = TRUE)
+write.sdm(m_merged_sentinel,"merged_GrW_sentinel",overwrite = TRUE)
+write.sdm(m_merged_landc,"merged_GrW_landc",overwrite = TRUE)
+write.sdm(m_merged_lidsent,"merged_Grw_lidsent",overwrite = TRUE)
+write.sdm(m_merged_all,"merged_GrW_all",overwrite = TRUE)

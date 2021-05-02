@@ -5,7 +5,7 @@ library(gridExtra)
 library(grid)
 library(sdm)
 
-workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April/"
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April_results/"
 setwd(workingdirectory)
 
 # Import
@@ -41,7 +41,7 @@ GrW_lid_acc$modeltype[c(41:60,101:120,161:180,221:240,281:300)]<-"rf"
 GrW_landc_acc$modeltype<-NA
 GrW_landc_acc$modeltype[c(1:20,61:80,121:140,181:200,241:260)]<-"glm"
 GrW_landc_acc$modeltype[c(21:40,81:100,141:160,201:220,261:280)]<-"maxent"
-GrW_landc_acc$modeltype[c(41:60,101:120,161:180,221:240,281:300)]<-"rf"
+GrW_landc_acc$modeltype[c(41:60,101:120,161:180,221:240,281:299)]<-"rf"
 
 GrW_lidsent_acc$modeltype<-NA
 GrW_lidsent_acc$modeltype[c(1:20,61:80,121:140,181:200,241:260)]<-"glm"

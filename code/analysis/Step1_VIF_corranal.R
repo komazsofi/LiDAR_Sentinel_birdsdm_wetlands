@@ -21,8 +21,8 @@ proj4string(all_predictor) <- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=
 
 landcover=subset(all_predictor, c(1:6), drop=FALSE)
 lidar=subset(all_predictor, c(7:18), drop=FALSE)
-optical=subset(all_predictor, c(19:28), drop=FALSE)
-radar=subset(all_predictor, c(29:40), drop=FALSE)
+optical=subset(all_predictor, c(19:24), drop=FALSE)
+radar=subset(all_predictor, c(25:36), drop=FALSE)
 
 # VIF
 
