@@ -22,11 +22,11 @@ GrW_landc_acc=getEvaluation(GrW_landc,stat=c('AUC','TSS','Deviance','Kappa'))
 GrW_lidsent_acc=getEvaluation(GrW_lidsent,stat=c('AUC','TSS','Deviance','Kappa'))
 GrW_all_acc=getEvaluation(GrW_all,stat=c('AUC','TSS','Deviance','Kappa'))
 
-GrW_lid_acc$RStype<-"lidar"
-GrW_sent_acc$RStype<-"sentinel"
-GrW_landc_acc$RStype<-"landc"
-GrW_lidsent_acc$RStype<-"lidsent"
-GrW_all_acc$RStype<-"lidall"
+GrW_lid_acc$RStype<-"LiDAR"
+GrW_sent_acc$RStype<-"Sentinel"
+GrW_landc_acc$RStype<-"Land cover"
+GrW_lidsent_acc$RStype<-"LiD+Sent"
+GrW_all_acc$RStype<-"All"
 
 GrW_sent_acc$modeltype<-NA
 GrW_sent_acc$modeltype[c(1:20,61:80,121:140,181:200,241:260)]<-"glm"
@@ -55,7 +55,7 @@ GrW_all_acc$modeltype[c(41:60,101:120,161:180,221:240,281:300)]<-"rf"
 
 GrW_merged=rbind(GrW_lid_acc,GrW_sent_acc,GrW_landc_acc,GrW_lidsent_acc,GrW_all_acc)
 
-GrW_merged$RStype <- factor(GrW_merged$RStype , levels=c("lidar", "sentinel", "landc", "lidsent","lidall"))
+GrW_merged$RStype <- factor(GrW_merged$RStype , levels=c("LiDAR", "Sentinel", "Land cover", "LiD+Sent","All"))
 GrW_merged$modeltype <- factor(GrW_merged$modeltype , levels=c("glm","maxent","rf"))
 
 Sn_lid=read.sdm("merged_Sn_lidar.sdm")
@@ -70,11 +70,11 @@ Sn_landc_acc=getEvaluation(Sn_landc,stat=c('AUC','TSS','Deviance','Kappa'))
 Sn_lidsent_acc=getEvaluation(Sn_lidsent,stat=c('AUC','TSS','Deviance','Kappa'))
 Sn_all_acc=getEvaluation(Sn_all,stat=c('AUC','TSS','Deviance','Kappa'))
 
-Sn_lid_acc$RStype<-"lidar"
-Sn_sent_acc$RStype<-"sentinel"
-Sn_landc_acc$RStype<-"landc"
-Sn_lidsent_acc$RStype<-"lidsent"
-Sn_all_acc$RStype<-"lidall"
+Sn_lid_acc$RStype<-"LiDAR"
+Sn_sent_acc$RStype<-"Sentinel"
+Sn_landc_acc$RStype<-"Land cover"
+Sn_lidsent_acc$RStype<-"LiD+Sent"
+Sn_all_acc$RStype<-"All"
 
 Sn_sent_acc$modeltype<-NA
 Sn_sent_acc$modeltype[c(1:20,61:80,121:140,181:200,241:260)]<-"glm"
@@ -103,82 +103,73 @@ Sn_all_acc$modeltype[c(41:60,101:120,161:180,221:240,281:300)]<-"rf"
 
 Sn_merged=rbind(Sn_lid_acc,Sn_sent_acc,Sn_landc_acc,Sn_lidsent_acc,Sn_all_acc)
 
-Sn_merged$RStype <- factor(Sn_merged$RStype , levels=c("lidar", "sentinel", "landc","lidsent", "lidall"))
+Sn_merged$RStype <- factor(Sn_merged$RStype , levels=c("LiDAR", "Sentinel", "Land cover","LiD+Sent", "All"))
 Sn_merged$modeltype <- factor(Sn_merged$modeltype , levels=c("glm","maxent","rf"))
-
-# visualization
-
-c=ggplot(GrW_merged, aes(x=modeltype, y=AUC,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0.2,1)+
-  xlab("SDM")+ggtitle("a. Great reed warbler")+
-  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink","lidsent"="chocolate", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
-d=ggplot(Sn_merged, aes(x=modeltype, y=AUC,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+
-  ylab("AUC")+xlab("SDM")+ggtitle("b. Savi's warbler")+ylim(0.2,1)+
-  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink","lidsent"="chocolate",  "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
-
-p1=ggplot(GrW_merged, aes(x=modeltype, y=AUC,fill=RStype)) + 
-  geom_boxplot(show.legend = TRUE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0.2,1)+
-  xlab("SDM")+ggtitle("a. Great reed warbler")+
-  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink","lidsent"="chocolate",  "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
-
-get_legend<-function(myggplot){
-  tmp <- ggplot_gtable(ggplot_build(myggplot))
-  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
-  legend <- tmp$grobs[[leg]]
-  return(legend)
-}
-
-legend2 <- get_legend(p1)
-
-fig1b=grid.arrange(
-  c,d,legend2,
-  ncol=2,
-  nrow=2,
-  layout_matrix=rbind(c(1,3),c(2,3)),
-  widths = c(1,0.5),
-  heights = c(1,1)
-)
-
-ggsave("fig2v3.png",plot = fig1b,width = 10, height =10)
-
-c2=ggplot(GrW_merged, aes(x=modeltype, y=TSS,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("TSS")+ylim(0,1)+
-  xlab("SDM")+ggtitle("c. Great reed warbler")+
-  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink", "lidsent"="chocolate", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
-d2=ggplot(Sn_merged, aes(x=modeltype, y=TSS,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+
-  ylab("TSS")+xlab("SDM")+ggtitle("d. Savi's warbler")+ylim(0,1)+
-  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink", "lidsent"="chocolate", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
-
-p2=ggplot(GrW_merged, aes(x=modeltype, y=TSS,fill=RStype)) + 
-  geom_boxplot(show.legend = TRUE)+theme_bw(base_size = 20)+ylab("TSS")+ylim(0,1)+
-  xlab("SDM")+ggtitle("a. Great reed warbler")+
-  scale_fill_manual(values = c("lidar" = "orange", "sentinel" = "goldenrod4", "landc" = "deeppink", "lidsent"="chocolate", "lidall"="coral2"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover","LiDAR+Sentinel","All"))
-
-get_legend<-function(myggplot){
-  tmp <- ggplot_gtable(ggplot_build(myggplot))
-  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
-  legend <- tmp$grobs[[leg]]
-  return(legend)
-}
-
-legend3 <- get_legend(p2)
-
-fig1c=grid.arrange(
-  c2,d2,legend3,
-  ncol=2,
-  nrow=2,
-  layout_matrix=rbind(c(1,3),c(2,3)),
-  widths = c(1,0.5),
-  heights = c(1,1)
-)
-
-ggsave("fig2tss.png",plot = fig1c,width = 10, height =10)
 
 # Only visualize RF
 
+aa=ggplot(GrW_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=AUC,fill=RStype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0,1)+
+  xlab("")+
+  scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
+  theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
+bb=ggplot(GrW_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=TSS,fill=RStype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("TSS")+ylim(0,1)+
+  xlab("")+
+  scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
+  theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
+
+cc=ggplot(GrW_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=Deviance,fill=RStype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Deviance")+ylim(0,1)+
+  xlab("")+
+  scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
+  theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
+
+dd=ggplot(GrW_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=Kappa,fill=RStype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Kappa")+ylim(0,1)+
+  xlab("")+
+  scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
+  theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
+
+aa2=ggplot(Sn_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=AUC,fill=RStype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0,1)+
+  xlab("")+
+  scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
+  theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
+
+bb2=ggplot(Sn_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=TSS,fill=RStype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("TSS")+ylim(0,1)+
+  xlab("")+
+  scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
+  theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
+
+cc2=ggplot(Sn_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=Deviance,fill=RStype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Deviance")+ylim(0,1)+
+  xlab("")+
+  scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
+  theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
+
+dd2=ggplot(Sn_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=Kappa,fill=RStype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Kappa")+ylim(0,1)+
+  xlab("")+
+  scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
+  theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
+
+t1 <- textGrob("a. Great reed warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
+t2 <- textGrob("b. Savis's warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
+
+fig2=grid.arrange(
+  t1,aa,bb,cc,dd,
+  t2,aa2,bb2,cc2,dd2,
+  ncol=4,
+  nrow=4,
+  layout_matrix=rbind(c(1,1,1,1),c(2,3,4,5), c(6,6,6,6),c(7,8,9,10)),
+  widths = c(1,1,1,1),
+  heights = c(0.2,1,0.2,1)
+)
+
+ggsave("fig2_maxent.png",plot = fig2,width = 18, height =14)
 
 # report accuracy table
 
