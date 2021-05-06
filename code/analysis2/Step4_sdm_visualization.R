@@ -9,8 +9,8 @@ workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataproce
 setwd(workingdirectory)
 
 # Import
-m_merged_GrW=read.sdm("merged_GrW_all.sdm")
-m_merged_Sn=read.sdm("merged_Sn_all.sdm")
+m_merged_GrW=read.sdm("merged_GrW_all2.sdm")
+m_merged_Sn=read.sdm("merged_Sn_all2.sdm")
 
 # Feature importance
 
@@ -26,7 +26,7 @@ feaimp_GrW_dfvis$variables[22]<-"radar_VVsd_hor"
 feaimp_GrW_dfvis$color<-0
 feaimp_GrW_dfvis$color[1:6]<-3
 feaimp_GrW_dfvis$color[7:15]<-1
-feaimp_GrW_dfvis$color[16:23]<-2
+feaimp_GrW_dfvis$color[16:22]<-2
 
 #vi2 <- getVarImp(m_merged_Sn, method=c('glm','maxent','rf'))
 #vi2 <- getVarImp(m_merged_Sn, method=c('maxent'))
@@ -44,12 +44,12 @@ feaimp_Sn_dfvis$color[16:23]<-2
 
 a1=ggplot(feaimp_GrW_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(-0.01, 0.2)+
+  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(-0.01, 0.3)+
   scale_fill_manual(values = c("1" = "orange", "2" = "goldenrod4", "3" = "deeppink"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover"))+ggtitle("a. Great reed warbler")
 
 b1=ggplot(feaimp_Sn_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(0, 0.2)+
+  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(0, 0.3)+
   scale_fill_manual(values = c("1" = "orange", "2" = "goldenrod4", "3" = "deeppink"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover"))+ggtitle("b. Savi's warbler")
 
 p0=ggplot(feaimp_Sn_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = TRUE)+

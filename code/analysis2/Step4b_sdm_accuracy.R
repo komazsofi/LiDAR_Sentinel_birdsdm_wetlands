@@ -10,11 +10,11 @@ setwd(workingdirectory)
 
 # Import
 
-GrW_lid=read.sdm("merged_GrW_lidar.sdm")
-GrW_sent=read.sdm("merged_GrW_sentinel.sdm")
-GrW_landc=read.sdm("merged_GrW_landc.sdm")
-GrW_lidsent=read.sdm("merged_GrW_lidsent.sdm")
-GrW_all=read.sdm("merged_GrW_all.sdm")
+GrW_lid=read.sdm("merged_GrW_lidar2.sdm")
+GrW_sent=read.sdm("merged_GrW_sentinel2.sdm")
+GrW_landc=read.sdm("merged_GrW_landc2.sdm")
+GrW_lidsent=read.sdm("merged_GrW_lidsent2.sdm")
+GrW_all=read.sdm("merged_GrW_all2.sdm")
 
 GrW_lid_acc=getEvaluation(GrW_lid,stat=c('AUC','TSS','Deviance','Kappa'))
 GrW_sent_acc=getEvaluation(GrW_sent,stat=c('AUC','TSS','Deviance','Kappa'))
