@@ -13,11 +13,10 @@ setwd(workingdirectory)
 
 # Import
 
-readRDS("vif_landcover.rds")
-readRDS("vif_lidar.rds")
-readRDS("vif_optical.rds")
-readRDS("vif_radar.rds")
-readRDS("vif_rasters.rds")
+readRDS("vif_landcover2.rds")
+readRDS("vif_lidar2.rds")
+readRDS("vif_sentinel2.rds")
+readRDS("vif_rasters2.rds")
 
 presabs_GrW=read.csv("presabs_Sn_apr.csv")
 presabs_Sn=read.csv("presabs_GrW_apr.csv")
