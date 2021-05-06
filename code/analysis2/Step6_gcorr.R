@@ -8,13 +8,19 @@ library(see)
 library(ggraph) 
 
 
-workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both/"
+workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April_results/"
 setwd(workingdirectory)
 
 # Import
 
-presabs_GrW=read.csv("presabs_Sn2.csv")
-presabs_Sn=read.csv("presabs_GrW2.csv")
+readRDS("vif_landcover.rds")
+readRDS("vif_lidar.rds")
+readRDS("vif_optical.rds")
+readRDS("vif_radar.rds")
+readRDS("vif_rasters.rds")
+
+presabs_GrW=read.csv("presabs_Sn_apr.csv")
+presabs_Sn=read.csv("presabs_GrW_apr.csv")
 
 presabs_GrW=presabs_GrW[,-1]
 presabs_Sn=presabs_Sn[,-1]
