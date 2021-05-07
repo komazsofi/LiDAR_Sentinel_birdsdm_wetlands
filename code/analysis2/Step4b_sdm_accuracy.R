@@ -55,14 +55,14 @@ GrW_all_acc$modeltype[c(41:60,101:120,161:180,221:240,281:300)]<-"rf"
 
 GrW_merged=rbind(GrW_lid_acc,GrW_sent_acc,GrW_landc_acc,GrW_lidsent_acc,GrW_all_acc)
 
-GrW_merged$RStype <- factor(GrW_merged$RStype , levels=c("LiDAR", "Sentinel", "Land cover", "LiD+Sent","All"))
+GrW_merged$RStype <- factor(GrW_merged$RStype , levels=c("Land cover","LiDAR", "Sentinel","LiD+Sent","All"))
 GrW_merged$modeltype <- factor(GrW_merged$modeltype , levels=c("glm","maxent","rf"))
 
-Sn_lid=read.sdm("merged_Sn_lidar.sdm")
-Sn_sent=read.sdm("merged_Sn_sentinel.sdm")
-Sn_landc=read.sdm("merged_Sn_landc.sdm")
-Sn_lidsent=read.sdm("merged_Sn_lidsent.sdm")
-Sn_all=read.sdm("merged_Sn_all.sdm")
+Sn_lid=read.sdm("merged_Sn_lidar2.sdm")
+Sn_sent=read.sdm("merged_Sn_sentinel2.sdm")
+Sn_landc=read.sdm("merged_Sn_landc2.sdm")
+Sn_lidsent=read.sdm("merged_Sn_lidsent2.sdm")
+Sn_all=read.sdm("merged_Sn_all2.sdm")
 
 Sn_lid_acc=getEvaluation(Sn_lid,stat=c('AUC','TSS','Deviance','Kappa'))
 Sn_sent_acc=getEvaluation(Sn_sent,stat=c('AUC','TSS','Deviance','Kappa'))
@@ -103,54 +103,56 @@ Sn_all_acc$modeltype[c(41:60,101:120,161:180,221:240,281:300)]<-"rf"
 
 Sn_merged=rbind(Sn_lid_acc,Sn_sent_acc,Sn_landc_acc,Sn_lidsent_acc,Sn_all_acc)
 
-Sn_merged$RStype <- factor(Sn_merged$RStype , levels=c("LiDAR", "Sentinel", "Land cover","LiD+Sent", "All"))
+Sn_merged$RStype <- factor(Sn_merged$RStype , levels=c("Land cover","LiDAR", "Sentinel","LiD+Sent", "All"))
 Sn_merged$modeltype <- factor(Sn_merged$modeltype , levels=c("glm","maxent","rf"))
 
 # Only visualize RF
 
-aa=ggplot(GrW_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=AUC,fill=RStype)) + 
+met="maxent"
+
+aa=ggplot(GrW_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=AUC,fill=RStype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0,1)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
-bb=ggplot(GrW_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=TSS,fill=RStype)) + 
+bb=ggplot(GrW_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=TSS,fill=RStype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("TSS")+ylim(0,1)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
-cc=ggplot(GrW_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=Deviance,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Deviance")+ylim(0,1)+
+cc=ggplot(GrW_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=Deviance,fill=RStype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Deviance")+ylim(0,2)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
-dd=ggplot(GrW_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=Kappa,fill=RStype)) + 
+dd=ggplot(GrW_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=Kappa,fill=RStype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Kappa")+ylim(0,1)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
-aa2=ggplot(Sn_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=AUC,fill=RStype)) + 
+aa2=ggplot(Sn_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=AUC,fill=RStype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0,1)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
-bb2=ggplot(Sn_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=TSS,fill=RStype)) + 
+bb2=ggplot(Sn_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=TSS,fill=RStype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("TSS")+ylim(0,1)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
-cc2=ggplot(Sn_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=Deviance,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Deviance")+ylim(0,1)+
+cc2=ggplot(Sn_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=Deviance,fill=RStype)) + 
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Deviance")+ylim(0,2)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
-dd2=ggplot(Sn_merged[GrW_merged$modeltype=="maxent",], aes(x=RStype, y=Kappa,fill=RStype)) + 
+dd2=ggplot(Sn_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=Kappa,fill=RStype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Kappa")+ylim(0,1)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
@@ -166,7 +168,7 @@ fig2=grid.arrange(
   nrow=4,
   layout_matrix=rbind(c(1,1,1,1),c(2,3,4,5), c(6,6,6,6),c(7,8,9,10)),
   widths = c(1,1,1,1),
-  heights = c(0.2,1,0.2,1)
+  heights = c(0.3,1,0.3,1)
 )
 
 ggsave("fig2_maxent.png",plot = fig2,width = 18, height =14)
@@ -197,6 +199,10 @@ png("GrW_landc.png", width = 6, height = 5, units = 'in',res=300)
 roc(GrW_landc)
 dev.off()
 
+png("GrW_lidsent.png", width = 6, height = 5, units = 'in',res=300)
+roc(GrW_lidsent)
+dev.off()
+
 png("GrW_all.png", width = 6, height = 5, units = 'in',res=300)
 roc(GrW_all)
 dev.off()
@@ -211,6 +217,10 @@ dev.off()
 
 png("Sn_landc.png", width = 6, height = 5, units = 'in',res=300)
 roc(Sn_landc)
+dev.off()
+
+png("Sn_lidsent.png", width = 6, height = 5, units = 'in',res=300)
+roc(Sn_lidsent)
 dev.off()
 
 png("Sn_all.png", width = 6, height = 5, units = 'in',res=300)

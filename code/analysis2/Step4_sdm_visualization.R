@@ -19,10 +19,6 @@ m_merged_Sn=read.sdm("merged_Sn_all2.sdm")
 vi <- getVarImp(m_merged_GrW, method=c('rf'))
 feaimp_GrW_dfvis=vi@varImportanceMean[["AUCtest"]]
 
-feaimp_GrW_dfvis$variables[17]<-"optical_NDVIsd_hor"
-feaimp_GrW_dfvis$variables[20]<-"radar_VHsd_hor"
-feaimp_GrW_dfvis$variables[22]<-"radar_VVsd_hor"
-
 feaimp_GrW_dfvis$color<-0
 feaimp_GrW_dfvis$color[1:6]<-3
 feaimp_GrW_dfvis$color[7:15]<-1
@@ -33,14 +29,10 @@ feaimp_GrW_dfvis$color[16:22]<-2
 vi2 <- getVarImp(m_merged_Sn, method=c('rf'))
 feaimp_Sn_dfvis=vi2@varImportanceMean[["AUCtest"]]
 
-feaimp_Sn_dfvis$variables[17]<-"optical_NDVIsd_hor"
-feaimp_Sn_dfvis$variables[20]<-"radar_VHsd_hor"
-feaimp_Sn_dfvis$variables[22]<-"radar_VVsd_hor"
-
 feaimp_Sn_dfvis$color<-0
 feaimp_Sn_dfvis$color[1:6]<-3
 feaimp_Sn_dfvis$color[7:15]<-1
-feaimp_Sn_dfvis$color[16:23]<-2
+feaimp_Sn_dfvis$color[16:22]<-2
 
 a1=ggplot(feaimp_GrW_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
@@ -49,7 +41,7 @@ a1=ggplot(feaimp_GrW_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.f
 
 b1=ggplot(feaimp_Sn_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(0, 0.3)+
+  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(-0.01, 0.3)+
   scale_fill_manual(values = c("1" = "orange", "2" = "goldenrod4", "3" = "deeppink"),name="Metrics type",labels=c("LiDAR","Sentinel","Landcover"))+ggtitle("b. Savi's warbler")
 
 p0=ggplot(feaimp_Sn_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = TRUE)+

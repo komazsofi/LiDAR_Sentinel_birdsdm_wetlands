@@ -20,8 +20,8 @@ setwd(workingdirectory)
 filelist=list.files(pattern = "*.tif")
 all_predictor=stack(filelist)
 
-#presabs=read.csv("presabs_Sn_apr2.csv")
-presabs=read.csv("presabs_GrW_apr2.csv")
+presabs=read.csv("presabs_Sn_apr2.csv")
+#presabs=read.csv("presabs_GrW_apr2.csv")
 presabs=presabs[,-1]
 
 mydata_clean2=presabs
@@ -31,8 +31,8 @@ proj4string(mydata_clean2)<- CRS("+proj=sterea +lat_0=52.15616055555555 +lon_0=5
 
 # spatial thinning
 
-#sub.presabs <- subsample.distance(mydata_clean2, size = 2696, d = 20, replacement=FALSE,latlong=FALSE)
-sub.presabs <- subsample.distance(mydata_clean2, size = 1420, d = 20, replacement=FALSE,latlong=FALSE)
+sub.presabs <- subsample.distance(mydata_clean2, size = 2696, d = 20, replacement=FALSE,latlong=FALSE)
+#sub.presabs <- subsample.distance(mydata_clean2, size = 1420, d = 20, replacement=FALSE,latlong=FALSE)
 
 table(sub.presabs$occurrence)
 # optimal blocksize
@@ -184,14 +184,14 @@ m_merged_all=model_lidall1+model_lidall2+model_lidall3+model_lidall4+model_lidal
 
 setwd("D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April_results/")
 
-#write.sdm(m_merged_lidar,"merged_Sn_lidar",overwrite = TRUE)
-#write.sdm(m_merged_sentinel,"merged_Sn_sentinel",overwrite = TRUE)
-#write.sdm(m_merged_landc,"merged_Sn_landc",overwrite = TRUE)
-#write.sdm(m_merged_lidsent,"merged_Sn_lidsent",overwrite = TRUE)
-#write.sdm(m_merged_all,"merged_Sn_all",overwrite = TRUE)
+write.sdm(m_merged_lidar,"merged_Sn_lidar2",overwrite = TRUE)
+write.sdm(m_merged_sentinel,"merged_Sn_sentinel2",overwrite = TRUE)
+write.sdm(m_merged_landc,"merged_Sn_landc2",overwrite = TRUE)
+write.sdm(m_merged_lidsent,"merged_Sn_lidsent2",overwrite = TRUE)
+write.sdm(m_merged_all,"merged_Sn_all2",overwrite = TRUE)
 
-write.sdm(m_merged_lidar,"merged_GrW_lidar2",overwrite = TRUE)
-write.sdm(m_merged_sentinel,"merged_GrW_sentinel2",overwrite = TRUE)
-write.sdm(m_merged_landc,"merged_GrW_landc2",overwrite = TRUE)
-write.sdm(m_merged_lidsent,"merged_Grw_lidsent2",overwrite = TRUE)
-write.sdm(m_merged_all,"merged_GrW_all2",overwrite = TRUE)
+#write.sdm(m_merged_lidar,"merged_GrW_lidar2",overwrite = TRUE)
+#write.sdm(m_merged_sentinel,"merged_GrW_sentinel2",overwrite = TRUE)
+#write.sdm(m_merged_landc,"merged_GrW_landc2",overwrite = TRUE)
+#write.sdm(m_merged_lidsent,"merged_Grw_lidsent2",overwrite = TRUE)
+#write.sdm(m_merged_all,"merged_GrW_all2",overwrite = TRUE)
