@@ -108,7 +108,7 @@ Sn_merged$modeltype <- factor(Sn_merged$modeltype , levels=c("glm","maxent","rf"
 
 # Only visualize RF
 
-met="maxent"
+met="glm"
 
 aa=ggplot(GrW_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=AUC,fill=RStype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0,1)+
@@ -123,7 +123,7 @@ bb=ggplot(GrW_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=TSS,fill=RStyp
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
 cc=ggplot(GrW_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=Deviance,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Deviance")+ylim(0,2)+
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Deviance")+ylim(0,30)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
@@ -171,7 +171,7 @@ fig2=grid.arrange(
   heights = c(0.3,1,0.3,1)
 )
 
-ggsave("fig2_maxent.png",plot = fig2,width = 18, height =14)
+ggsave("fig2_glm.png",plot = fig2,width = 18, height =14)
 
 # report accuracy table
 
