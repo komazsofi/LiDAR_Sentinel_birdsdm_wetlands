@@ -121,10 +121,10 @@ a=ggplot(sel_fea1_GrW1,aes(x=optical_NDVIsd_hor_100m,y=meanresp))+geom_line(colo
   theme_bw(base_size = 16)+ylab("Probability")+xlab("optical_NDVIsd_hor_100m")+ylim(0,1)+ggtitle("c.")
 b=ggplot(sel_fea1_GrW2,aes(x=lidar_C_ppr,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
-  theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_C_ppr")+ylim(0,1)+ggtitle("e.")
+  theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_C_ppr")+ylim(0,1)+ggtitle("d.")
 c=ggplot(sel_fea1_GrW3,aes(x=landcover_propswamp,y=meanresp))+geom_line(color="deeppink",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="deeppink", alpha = .2)+
-  theme_bw(base_size = 16)+ylab("Probability")+xlab("landcover_propswamp")+ylim(0,1)+ggtitle("d.")
+  theme_bw(base_size = 16)+ylab("Probability")+xlab("landcover_propswamp")+ylim(0,1)+ggtitle("e.")
 d=ggplot(sel_fea1_GrW4,aes(x=radar_VVmax,y=meanresp))+geom_line(color="goldenrod4",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="goldenrod4", alpha = .2)+
   theme_bw(base_size = 16)+ylab("Probability")+xlab("radar_VVmax")+ylim(0,1)+ggtitle("f.")
@@ -137,16 +137,16 @@ f=ggplot(sel_fea1_Sn1,aes(x=lidar_HH_reedveg_prop,y=meanresp))+geom_line(color="
   theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)+ggtitle("h.")
 g=ggplot(sel_fea1_Sn2,aes(x=landcover_propswamp,y=meanresp))+geom_line(color="deeppink",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="deeppink", alpha = .2)+
-  theme_bw(base_size = 16)+ylab("Probability")+xlab("landcover_propswamp")+ylim(0,1)+ggtitle("k.")
+  theme_bw(base_size = 16)+ylab("Probability")+xlab("landcover_propswamp")+ylim(0,1)+ggtitle("i.")
 h=ggplot(sel_fea1_Sn3,aes(x=lidar_C_ppr,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
   theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_C_ppr")+ylim(0,1)+ggtitle("j.")
 j=ggplot(sel_fea1_Sn4,aes(x=optical_NDVImed,y=meanresp))+geom_line(color="goldenrod4",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="goldenrod4", alpha = .2)+
-  theme_bw(base_size = 16)+ylab("Probability")+xlab("optical_NDVImed")+ylim(0,1)+ggtitle("l.")
+  theme_bw(base_size = 16)+ylab("Probability")+xlab("optical_NDVImed")+ylim(0,1)+ggtitle("k.")
 k=ggplot(sel_fea1_Sn5,aes(x=lidar_HH_sd,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
-  theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_sd")+ylim(0,1)+ggtitle("i.")
+  theme_bw(base_size = 16)+ylab("Probability")+xlab("lidar_HH_sd")+ylim(0,1)+ggtitle("l.")
 
 t1 <- textGrob("Savis's warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
 t3 <- textGrob("Great reed warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
