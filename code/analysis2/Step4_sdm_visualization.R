@@ -14,7 +14,7 @@ m_merged_Sn=read.sdm("merged_Sn_all2.sdm")
 
 # Feature importance
 
-met="glm"
+met="maxent"
 
 #vi <- getVarImp(m_merged_GrW, method=c('glm','maxent','rf'))
 vi <- getVarImp(m_merged_GrW, method=c(met))
@@ -36,17 +36,17 @@ feaimp_Sn_dfvis$color[16:22]<-3
 
 a1=ggplot(feaimp_GrW_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(-0.01, 0.3)+
-  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Landcover","LiDAR","Sentinel"))+ggtitle("a. Great reed warbler")
+  coord_flip()+theme_bw(base_size = 30)+ylab("Feature Importance")+xlab("Metrics")+ylim(-0.01, 0.3)+
+  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Landcover","LiDAR","Sentinel"))+ggtitle("(a) Great reed warbler")
 
 b1=ggplot(feaimp_Sn_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+ylim(0, 0.3)+
-  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Landcover","LiDAR","Sentinel"))+ggtitle("b. Savi's warbler")
+  coord_flip()+theme_bw(base_size = 30)+ylab("Feature Importance")+xlab("Metrics")+ylim(0, 0.3)+
+  scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Landcover","LiDAR","Sentinel"))+ggtitle("(b) Savi's warbler")
 
 p0=ggplot(feaimp_Sn_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = TRUE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 20)+ylab("Feature Importance")+xlab("Metrics")+
+  coord_flip()+theme_bw(base_size = 30)+ylab("Feature Importance")+xlab("Metrics")+
   scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Land cover","LiDAR","Sentinel"))+ggtitle("a. Great reed warbler")
 
 get_legend<-function(myggplot){
@@ -65,4 +65,7 @@ fig2b=grid.arrange(
   widths = c(1,1,0.3)
 )
 
-ggsave("fig3_ensemble.png",plot = fig2b,width = 16, height =10)
+ggsave("fig3_ensemble_vxx.png",plot = fig2b,width = 25, height =15)
+ggsave("fig3_rf_vxx.png",plot = fig2b,width = 25, height =15)
+ggsave("fig3_glm_vxx.png",plot = fig2b,width = 25, height =15)
+ggsave("fig3_maxent_vxx.png",plot = fig2b,width = 25, height =15)
