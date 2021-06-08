@@ -36,17 +36,17 @@ feaimp_Sn_dfvis$color[16:22]<-3
 
 a1=ggplot(feaimp_GrW_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 25)+ylab("Feature Importance")+xlab("Metrics")+ylim(-0.01, 0.3)+
+  coord_flip()+theme_bw(base_size = 30)+ylab("Feature Importance")+xlab("Metrics")+ylim(-0.01, 0.3)+
   scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Landcover","LiDAR","Sentinel"))+ggtitle("(a) Great reed warbler")
 
 b1=ggplot(feaimp_Sn_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = FALSE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 25)+ylab("Feature Importance")+xlab("Metrics")+ylim(0, 0.3)+
+  coord_flip()+theme_bw(base_size = 30)+ylab("Feature Importance")+xlab("Metrics")+ylim(0, 0.3)+
   scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Landcover","LiDAR","Sentinel"))+ggtitle("(b) Savi's warbler")
 
 p0=ggplot(feaimp_Sn_dfvis, aes(x=reorder(variables,-color), y=AUCtest,fill=as.factor(color))) + geom_bar(stat="identity", color="black", position=position_dodge(),show.legend = TRUE)+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,position=position_dodge(.9))+
-  coord_flip()+theme_bw(base_size = 25)+ylab("Feature Importance")+xlab("Metrics")+
+  coord_flip()+theme_bw(base_size = 30)+ylab("Feature Importance")+xlab("Metrics")+
   scale_fill_manual(values = c("1" = "deeppink", "2" = "orange", "3" = "goldenrod4"),name="Metrics type",labels=c("Land cover","LiDAR","Sentinel"))+ggtitle("a. Great reed warbler")
 
 get_legend<-function(myggplot){
@@ -63,6 +63,13 @@ fig2b=grid.arrange(
   ncol=3,
   nrow=1,
   widths = c(1,1,0.3)
+)
+
+fig2b=grid.arrange(
+  a1,b1,
+  ncol=2,
+  nrow=1,
+  widths = c(1,1)
 )
 
 # response curves
@@ -118,43 +125,43 @@ sel_fea1_Sn5$sdresp=apply(subset(sel_fea1_Sn5, select = 2:101), 1, sd, na.rm=TRU
 
 a=ggplot(sel_fea1_GrW1,aes(x=optical_NDVIsd_hor_100m,y=meanresp))+geom_line(color="goldenrod4",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="goldenrod4", alpha = .2)+
-  theme_bw(base_size = 20)+ylab("Probability")+xlab("optical_NDVIsd_hor_100m")+ylim(0,1)+ggtitle("c.")
+  theme_bw(base_size = 25)+ylab("Probability")+xlab("optical_NDVIsd_hor_100m")+ylim(0,1)+ggtitle("c.")
 b=ggplot(sel_fea1_GrW2,aes(x=lidar_C_ppr,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
-  theme_bw(base_size = 20)+ylab("Probability")+xlab("lidar_C_ppr")+ylim(0,1)+ggtitle("d.")
+  theme_bw(base_size = 25)+ylab("Probability")+xlab("lidar_C_ppr")+ylim(0,1)+ggtitle("d.")
 c=ggplot(sel_fea1_GrW3,aes(x=landcover_propswamp,y=meanresp))+geom_line(color="deeppink",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="deeppink", alpha = .2)+
-  theme_bw(base_size = 20)+ylab("Probability")+xlab("landcover_propswamp")+ylim(0,1)+ggtitle("e.")
+  theme_bw(base_size = 25)+ylab("Probability")+xlab("landcover_propswamp")+ylim(0,1)+ggtitle("e.")
 d=ggplot(sel_fea1_GrW4,aes(x=radar_VVmax,y=meanresp))+geom_line(color="goldenrod4",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="goldenrod4", alpha = .2)+
-  theme_bw(base_size = 20)+ylab("Probability")+xlab("radar_VVmax")+ylim(0,1)+ggtitle("f.")
+  theme_bw(base_size = 25)+ylab("Probability")+xlab("radar_VVmax")+ylim(0,1)+ggtitle("f.")
 e=ggplot(sel_fea1_GrW5,aes(x=lidar_VD_1_2,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
-  theme_bw(base_size = 20)+ylab("Probability")+xlab("lidar_VD_1_2")+ylim(0,1)+ggtitle("g.")
+  theme_bw(base_size = 25)+ylab("Probability")+xlab("lidar_VD_1_2")+ylim(0,1)+ggtitle("g.")
 
 f=ggplot(sel_fea1_Sn1,aes(x=lidar_HH_reedveg_prop,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
-  theme_bw(base_size = 20)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)+ggtitle("h.")
+  theme_bw(base_size = 25)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)+ggtitle("h.")
 g=ggplot(sel_fea1_Sn2,aes(x=landcover_propswamp,y=meanresp))+geom_line(color="deeppink",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="deeppink", alpha = .2)+
-  theme_bw(base_size = 20)+ylab("Probability")+xlab("landcover_propswamp")+ylim(0,1)+ggtitle("i.")
+  theme_bw(base_size = 25)+ylab("Probability")+xlab("landcover_propswamp")+ylim(0,1)+ggtitle("i.")
 h=ggplot(sel_fea1_Sn3,aes(x=lidar_C_ppr,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
-  theme_bw(base_size = 20)+ylab("Probability")+xlab("lidar_C_ppr")+ylim(0,1)+ggtitle("j.")
+  theme_bw(base_size = 25)+ylab("Probability")+xlab("lidar_C_ppr")+ylim(0,1)+ggtitle("j.")
 j=ggplot(sel_fea1_Sn4,aes(x=optical_NDVImed,y=meanresp))+geom_line(color="goldenrod4",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="goldenrod4", alpha = .2)+
-  theme_bw(base_size = 20)+ylab("Probability")+xlab("optical_NDVImed")+ylim(0,1)+ggtitle("k.")
+  theme_bw(base_size = 25)+ylab("Probability")+xlab("optical_NDVImed")+ylim(0,1)+ggtitle("k.")
 k=ggplot(sel_fea1_Sn5,aes(x=lidar_HH_sd,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
-  theme_bw(base_size = 20)+ylab("Probability")+xlab("lidar_HH_sd")+ylim(0,1)+ggtitle("l.")
+  theme_bw(base_size = 25)+ylab("Probability")+xlab("lidar_HH_sd")+ylim(0,1)+ggtitle("l.")
 
 t1 <- textGrob("Savis's warbler",gp=gpar(fontsize=20, col="black", fontface="bold"))
 t3 <- textGrob("Great reed warbler",gp=gpar(fontsize=20, col="black", fontface="bold"))
 
 p0=ggplot(sel_fea1_Sn5,aes(x=lidar_HH_sd,y=meanresp))+geom_line(aes(color="goldenrod4"),size=2,show.legend=TRUE)+
   geom_line(aes(color="orange"),size=2)+geom_line(aes(color="deeppink"),size=2)+
-  theme_bw(base_size = 20)+ylab("Probability")+xlab("lidar_VV_p25")+ylim(0,1)+ggtitle("j.")+
-  scale_color_identity(name = "Metrics type",breaks = c("goldenrod4", "orange", "deeppink"),labels = c("Sentinel", "LiDAR", "Land cover"),guide = "legend")+theme(legend.position="bottom")
+  theme_bw(base_size = 30)+ylab("Probability")+xlab("lidar_VV_p25")+ylim(0,1)+ggtitle("j.")+
+  scale_color_identity(name = "Metrics type",breaks = c("deeppink", "orange","goldenrod4"),labels = c("Land cover", "LiDAR","Sentinel"),guide = "legend")+theme(legend.position="bottom")
 
 get_legend<-function(myggplot){
   tmp <- ggplot_gtable(ggplot_build(myggplot))
@@ -182,5 +189,5 @@ fig3=grid.arrange(
   nrow=2
 )
 
-ggsave("fig3_maxent_vx.png",plot = fig3,width = 25, height =20)
+ggsave("fig3_maxent_vx.png",plot = fig3,width = 32, height =25)
 #ggsave("fig3_rf.png",plot = fig3,width = 18, height =16)
