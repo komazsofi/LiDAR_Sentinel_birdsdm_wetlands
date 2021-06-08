@@ -108,58 +108,58 @@ Sn_merged$modeltype <- factor(Sn_merged$modeltype , levels=c("glm","maxent","rf"
 
 # Only visualize RF
 
-met="glm"
+met="maxent"
 
 aa=ggplot(GrW_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=AUC,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0,1)+
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 25)+ylab("AUC")+ylim(0,1)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
 bb=ggplot(GrW_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=TSS,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("TSS")+ylim(0,1)+
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 25)+ylab("TSS")+ylim(0,1)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
 cc=ggplot(GrW_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=Deviance,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Deviance")+ylim(0,30)+
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 25)+ylab("Deviance")+ylim(0,2)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
 dd=ggplot(GrW_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=Kappa,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Kappa")+ylim(0,1)+
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 25)+ylab("Kappa")+ylim(0,1)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
 aa2=ggplot(Sn_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=AUC,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("AUC")+ylim(0,1)+
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 25)+ylab("AUC")+ylim(0,1)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
 bb2=ggplot(Sn_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=TSS,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("TSS")+ylim(0,1)+
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 25)+ylab("TSS")+ylim(0,1)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
 cc2=ggplot(Sn_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=Deviance,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Deviance")+ylim(0,2)+
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 25)+ylab("Deviance")+ylim(0,2)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
 dd2=ggplot(Sn_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=Kappa,fill=RStype)) + 
-  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 20)+ylab("Kappa")+ylim(0,1)+
+  geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 25)+ylab("Kappa")+ylim(0,1)+
   xlab("")+
   scale_fill_manual(values = c("LiDAR" = "orange", "Sentinel" = "goldenrod4", "Land cover" = "deeppink", "LiD+Sent"="chocolate", "All"="coral2"),name="Metrics type")+
   theme(axis.text.x = element_text(angle = 45,vjust = 0.5, hjust=0.5))
 
-t1 <- textGrob("a. Great reed warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
-t2 <- textGrob("b. Savis's warbler",gp=gpar(fontsize=16, col="black", fontface="bold"))
+t1 <- textGrob("(a) Great reed warbler",gp=gpar(fontsize=25, col="black", fontface="bold"))
+t2 <- textGrob("(b) Savis's warbler",gp=gpar(fontsize=25, col="black", fontface="bold"))
 
 fig2=grid.arrange(
   t1,aa,bb,cc,dd,
@@ -171,7 +171,7 @@ fig2=grid.arrange(
   heights = c(0.3,1,0.3,1)
 )
 
-ggsave("fig2_glm.png",plot = fig2,width = 18, height =14)
+ggsave("fig2_maxent_vx.png",plot = fig2,width = 18, height =14)
 
 # report accuracy table
 
