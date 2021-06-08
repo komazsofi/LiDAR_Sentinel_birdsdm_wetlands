@@ -109,6 +109,8 @@ Sn_merged$modeltype <- factor(Sn_merged$modeltype , levels=c("glm","maxent","rf"
 # Only visualize RF
 
 met="maxent"
+met="glm"
+met="rf"
 
 aa=ggplot(GrW_merged[GrW_merged$modeltype==met,], aes(x=RStype, y=AUC,fill=RStype)) + 
   geom_boxplot(show.legend = FALSE)+theme_bw(base_size = 25)+ylab("AUC")+ylim(0,1)+
@@ -172,6 +174,8 @@ fig2=grid.arrange(
 )
 
 ggsave("fig2_maxent_vx.png",plot = fig2,width = 18, height =14)
+ggsave("fig2_glm_vx.png",plot = fig2,width = 18, height =14)
+ggsave("fig2_rf_vx.png",plot = fig2,width = 18, height =14)
 
 # report accuracy table
 
