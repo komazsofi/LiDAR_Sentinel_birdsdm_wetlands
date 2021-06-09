@@ -85,6 +85,7 @@ sel_fea1_GrW4$meanresp=rowMeans(sel_fea1_GrW4[,c(2:101)])
 sel_fea1_GrW4$sdresp=apply(subset(sel_fea1_GrW4, select = 2:101), 1, sd, na.rm=TRUE)
 
 sel_fea1_GrW5=resp_GrW_sel@response[["lidar_HH_reedveg_prop"]]
+sel_fea1_GrW5$lidar_HH_reedveg_prop=sel_fea1_GrW5$lidar_HH_reedveg_prop/max(sel_fea1_GrW5$lidar_HH_reedveg_prop)*100
 sel_fea1_GrW5$meanresp=rowMeans(sel_fea1_GrW5[,c(2:101)])
 sel_fea1_GrW5$sdresp=apply(subset(sel_fea1_GrW5, select = 2:101), 1, sd, na.rm=TRUE)
 
