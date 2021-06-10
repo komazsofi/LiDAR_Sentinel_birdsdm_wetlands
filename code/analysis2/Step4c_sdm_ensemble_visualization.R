@@ -127,7 +127,7 @@ d=ggplot(sel_fea1_GrW4,aes(x=radar_VVmax,y=meanresp))+geom_line(color="goldenrod
   theme_bw(base_size = 30)+ylab("Probability")+xlab("radar_VVmax")+ylim(0,1)+ggtitle("(f)")
 e=ggplot(sel_fea1_GrW5,aes(x=lidar_VD_1_2,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
-  theme_bw(base_size = 30)+ylab("Probability")+xlab("lidar_HH_reedveg_prop")+ylim(0,1)+ggtitle("(g)")
+  theme_bw(base_size = 30)+ylab("Probability")+xlab("lidar_VD_1_2")+ylim(0,1)+ggtitle("(g)")
 
 f=ggplot(sel_fea1_Sn1,aes(x=lidar_HH_reedveg_prop,y=meanresp))+geom_line(color="orange",size=2)+
   geom_ribbon(aes(y = meanresp, ymin = meanresp - sdresp/2, ymax = meanresp + sdresp/2),color="orange", alpha = .2)+
