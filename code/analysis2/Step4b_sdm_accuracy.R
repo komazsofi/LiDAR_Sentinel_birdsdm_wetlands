@@ -255,6 +255,17 @@ acc_Sn_table<-summarise(acc_grouped_Sn, meanAUC=mean(AUC),sdAUC=sd(AUC), meanDev
 write.csv(acc_GrW_table,"acc_GrW_table.csv")
 write.csv(acc_Sn_table,"acc_Sn_table.csv")
 
+acc_grouped_GrW2 <- group_by(GrW_merged, RStype)
+acc_GrW_table2<-summarise(acc_grouped_GrW2, meanAUC=mean(AUC),sdAUC=sd(AUC), meanDev=mean(Deviance),sdDev=sd(Deviance),
+                         meanTSS=mean(TSS),sdTSS=sd(TSS),meanKappa=mean(Kappa),sdKappa=sd(Kappa))
+
+acc_grouped_Sn2<- group_by(Sn_merged, RStype)
+acc_Sn_table2<-summarise(acc_grouped_Sn2, meanAUC=mean(AUC),sdAUC=sd(AUC), meanDev=mean(Deviance),sdDev=sd(Deviance),
+                        meanTSS=mean(TSS),sdTSS=sd(TSS),meanKappa=mean(Kappa),sdKappa=sd(Kappa))
+
+write.csv(acc_GrW_table2,"acc_GrW_table_ens.csv")
+write.csv(acc_Sn_table2,"acc_Sn_table_ens.csv")
+
 # ROC curves
 png("GrW_lid.png", width = 6, height = 5, units = 'in',res=300)
 roc(GrW_lid)
