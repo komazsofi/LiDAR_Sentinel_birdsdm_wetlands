@@ -5,7 +5,7 @@ library(gridExtra)
 library(grid)
 library(sdm)
 
-workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April_results/"
+workingdirectory="D:/Koma/sync/_Amsterdam/ZsofiaKoma_PhD_cleaned/Chapter4/2_Dataprocess/Results/"
 setwd(workingdirectory)
 
 # Import
@@ -54,9 +54,12 @@ GrW_all_acc$modeltype[c(21:40,81:100,141:160,201:220,261:280)]<-"maxent"
 GrW_all_acc$modeltype[c(41:60,101:120,161:180,221:240,281:300)]<-"rf"
 
 GrW_merged=rbind(GrW_lid_acc,GrW_sent_acc,GrW_landc_acc,GrW_lidsent_acc,GrW_all_acc)
+GrW_merged=GrW_merged[GrW_merged$modeltype!="maxent",]
 
 GrW_merged$RStype <- factor(GrW_merged$RStype , levels=c("Land cover","LiDAR", "Sentinel","LiD+Sent","All"))
-GrW_merged$modeltype <- factor(GrW_merged$modeltype , levels=c("glm","maxent","rf"))
+#GrW_merged$modeltype <- factor(GrW_merged$modeltype , levels=c("glm","maxent","rf"))
+
+GrW_merged$modeltype <- factor(GrW_merged$modeltype , levels=c("glm","rf"))
 
 Sn_lid=read.sdm("merged_Sn_lidar2.sdm")
 Sn_sent=read.sdm("merged_Sn_sentinel2.sdm")
@@ -102,9 +105,12 @@ Sn_all_acc$modeltype[c(21:40,81:100,141:160,201:220,261:280)]<-"maxent"
 Sn_all_acc$modeltype[c(41:60,101:120,161:180,221:240,281:300)]<-"rf"
 
 Sn_merged=rbind(Sn_lid_acc,Sn_sent_acc,Sn_landc_acc,Sn_lidsent_acc,Sn_all_acc)
+Sn_merged=Sn_merged[Sn_merged$modeltype!="maxent",]
 
 Sn_merged$RStype <- factor(Sn_merged$RStype , levels=c("Land cover","LiDAR", "Sentinel","LiD+Sent", "All"))
-Sn_merged$modeltype <- factor(Sn_merged$modeltype , levels=c("glm","maxent","rf"))
+#Sn_merged$modeltype <- factor(Sn_merged$modeltype , levels=c("glm","maxent","rf"))
+
+Sn_merged$modeltype <- factor(Sn_merged$modeltype , levels=c("glm","rf"))
 
 # Only visualize RF
 
@@ -240,7 +246,8 @@ fig2=grid.arrange(
   heights = c(0.3,1,0.3,1)
 )
 
-ggsave("fig2_ensav_vx.png",plot = fig2,width = 18, height =14)
+#ggsave("fig2_ensav_vx.png",plot = fig2,width = 18, height =14)
+ggsave("fig2_ensav_glmrf.png",plot = fig2,width = 18, height =14)
 
 # report accuracy table
 
@@ -263,8 +270,8 @@ acc_grouped_Sn2<- group_by(Sn_merged, RStype)
 acc_Sn_table2<-summarise(acc_grouped_Sn2, meanAUC=mean(AUC),sdAUC=sd(AUC), meanDev=mean(Deviance),sdDev=sd(Deviance),
                         meanTSS=mean(TSS),sdTSS=sd(TSS),meanKappa=mean(Kappa),sdKappa=sd(Kappa))
 
-write.csv(acc_GrW_table2,"acc_GrW_table_ens.csv")
-write.csv(acc_Sn_table2,"acc_Sn_table_ens.csv")
+write.csv(acc_GrW_table2,"acc_GrW_table_ens2.csv")
+write.csv(acc_Sn_table2,"acc_Sn_table_ens2.csv")
 
 # ROC curves
 png("GrW_lid.png", width = 6, height = 5, units = 'in',res=300)

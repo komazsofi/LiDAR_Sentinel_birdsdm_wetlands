@@ -5,7 +5,7 @@ library(gridExtra)
 library(grid)
 library(sdm)
 
-workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April_results/"
+workingdirectory="D:/Koma/sync/_Amsterdam/ZsofiaKoma_PhD_cleaned/Chapter4/2_Dataprocess/Results/"
 setwd(workingdirectory)
 
 # Import
@@ -16,8 +16,9 @@ m_merged_Sn=read.sdm("merged_Sn_all2.sdm")
 
 met="maxent"
 
+vi <- getVarImp(m_merged_GrW, method=c('maxent','rf'))
 #vi <- getVarImp(m_merged_GrW, method=c('glm','maxent','rf'))
-vi <- getVarImp(m_merged_GrW, method=c(met))
+#vi <- getVarImp(m_merged_GrW, method=c(met))
 feaimp_GrW_dfvis=vi@varImportanceMean[["AUCtest"]]
 
 feaimp_GrW_dfvis$color<-0
@@ -25,8 +26,9 @@ feaimp_GrW_dfvis$color[1:6]<-1
 feaimp_GrW_dfvis$color[7:15]<-2
 feaimp_GrW_dfvis$color[16:22]<-3
 
+vi2 <- getVarImp(m_merged_Sn, method=c('maxent','rf'))
 #vi2 <- getVarImp(m_merged_Sn, method=c('glm','maxent','rf'))
-vi2 <- getVarImp(m_merged_Sn, method=c(met))
+#vi2 <- getVarImp(m_merged_Sn, method=c(met))
 feaimp_Sn_dfvis=vi2@varImportanceMean[["AUCtest"]]
 
 feaimp_Sn_dfvis$color<-0
@@ -64,6 +66,8 @@ fig2b=grid.arrange(
   nrow=1,
   widths = c(1,1,0.3)
 )
+
+ggsave("fig3_ensemble_glmrf.png",plot = fig2b,width = 25, height =15)
 
 ggsave("fig3_ensemble_vxx.png",plot = fig2b,width = 25, height =15)
 ggsave("fig3_rf_vxx.png",plot = fig2b,width = 25, height =15)
