@@ -3,12 +3,12 @@ library(raster)
 library(rgdal)
 library(ROSE)
 
-workingdirectory="D:/Koma/Sync_PhD/_Amsterdam/_PhD/Chapter4_Sentinel/3_Dataprocessing/dataprocess_forpaper_march/both_April/"
+workingdirectory="D:/Koma/sync/_Amsterdam/ZsofiaKoma_PhD_cleaned/Chapter4/2_Dataprocess/Revision/"
 setwd(workingdirectory)
 
 # Import
 
-filelist=list.files(pattern = "*.tif")
+filelist=list.files(path="D:/Koma/sync/_Amsterdam/ZsofiaKoma_PhD_cleaned/Chapter4/1_Dataset/Processed_data_forsdm/",pattern = "*.tif",full.names = TRUE)
 all_predictor=stack(filelist)
 
 GrW=readOGR(dsn="presabs_GrW_rand.shp")

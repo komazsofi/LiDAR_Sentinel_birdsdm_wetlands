@@ -5,7 +5,8 @@ library(gridExtra)
 library(grid)
 library(sdm)
 
-workingdirectory="D:/Koma/sync/_Amsterdam/ZsofiaKoma_PhD_cleaned/Chapter4/2_Dataprocess/Results/"
+#workingdirectory="D:/Koma/sync/_Amsterdam/ZsofiaKoma_PhD_cleaned/Chapter4/2_Dataprocess/Results/"
+workingdirectory="D:/Koma/sync/_Amsterdam/ZsofiaKoma_PhD_cleaned/Chapter4/2_Dataprocess/Revision/"
 setwd(workingdirectory)
 
 # Import
@@ -54,12 +55,11 @@ GrW_all_acc$modeltype[c(21:40,81:100,141:160,201:220,261:280)]<-"maxent"
 GrW_all_acc$modeltype[c(41:60,101:120,161:180,221:240,281:300)]<-"rf"
 
 GrW_merged=rbind(GrW_lid_acc,GrW_sent_acc,GrW_landc_acc,GrW_lidsent_acc,GrW_all_acc)
-GrW_merged=GrW_merged[GrW_merged$modeltype!="maxent",]
+#GrW_merged=GrW_merged[GrW_merged$modeltype!="maxent",]
 
 GrW_merged$RStype <- factor(GrW_merged$RStype , levels=c("Land cover","LiDAR", "Sentinel","LiD+Sent","All"))
 #GrW_merged$modeltype <- factor(GrW_merged$modeltype , levels=c("glm","maxent","rf"))
-
-GrW_merged$modeltype <- factor(GrW_merged$modeltype , levels=c("glm","rf"))
+#GrW_merged$modeltype <- factor(GrW_merged$modeltype , levels=c("glm","rf"))
 
 Sn_lid=read.sdm("merged_Sn_lidar2.sdm")
 Sn_sent=read.sdm("merged_Sn_sentinel2.sdm")
@@ -105,12 +105,11 @@ Sn_all_acc$modeltype[c(21:40,81:100,141:160,201:220,261:280)]<-"maxent"
 Sn_all_acc$modeltype[c(41:60,101:120,161:180,221:240,281:300)]<-"rf"
 
 Sn_merged=rbind(Sn_lid_acc,Sn_sent_acc,Sn_landc_acc,Sn_lidsent_acc,Sn_all_acc)
-Sn_merged=Sn_merged[Sn_merged$modeltype!="maxent",]
+#Sn_merged=Sn_merged[Sn_merged$modeltype!="maxent",]
 
 Sn_merged$RStype <- factor(Sn_merged$RStype , levels=c("Land cover","LiDAR", "Sentinel","LiD+Sent", "All"))
 #Sn_merged$modeltype <- factor(Sn_merged$modeltype , levels=c("glm","maxent","rf"))
-
-Sn_merged$modeltype <- factor(Sn_merged$modeltype , levels=c("glm","rf"))
+#Sn_merged$modeltype <- factor(Sn_merged$modeltype , levels=c("glm","rf"))
 
 # Only visualize RF
 
